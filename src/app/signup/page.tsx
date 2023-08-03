@@ -16,6 +16,7 @@ export default async function SignUp() {
 
   const register_usr = async (event: any) => {
     event.preventDefault();
+    const axios = require('axios');
     const data = {
       fname: event.target.fname.value,
       lname: event.target.lname.value,
@@ -26,25 +27,51 @@ export default async function SignUp() {
 
     const JSONdata = JSON.stringify(data);
     const endpoint = "http://localhost:8000/api/auth/signup";
-    const options = {
-      method: "POST",
-      headers: {
+    let config = {
+      method: 'post',
+      url: endpoint,
+      headers: { 
         "Content-Type": "application/json",
       },
-      body: JSONdata,
+      data: JSONdata
     };
+    axios.request(config)
+    .then((response:any) => {
+      // let obj = JSON.parse(response.data)
+      // console.log(obj);
+      if (response.status == 400) {
+        toast("try again");
+      } else if (response.status == 300) {
+        toast("you have already been registered, Login with your credentials");
+        setTimeout(() => router.push("/login"), 1000);
+      } else {
+        toast("You have been Successfully Registered. Login with your Credentials now");
+      }  
+        
+    })
+    .catch((error:any) => {
+        console.error( error);
+        toast.error("Unexpected error occured");
+    });
+    // const options = {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSONdata,
+    // };
 
-    const response = await fetch(endpoint, options);
-    const res = await response.json();
-    if (response.status == 400) {
-      toast("try again");
-    } else if (response.status == 300) {
-      toast("you have already been registered, Login with your credentials");
-      setTimeout(() => router.push("/login"), 1000);
-    } else {
-      toast("you have been registered, Login with your credentials now");
-      setTimeout(() => router.push("/login"), 1000);
-    }
+    // const response = await fetch(endpoint, options);
+    // const res = await response.json();
+    // if (response.status == 400) {
+    //   toast("try again");
+    // } else if (response.status == 300) {
+    //   toast("you have already been registered, Login with your credentials");
+    //   setTimeout(() => router.push("/login"), 1000);
+    // } else {
+    //   toast("you have been registered, Login with your credentials now");
+    //   setTimeout(() => router.push("/login"), 1000);
+    // }
   };
 
   return (

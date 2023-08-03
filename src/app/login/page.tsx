@@ -14,6 +14,7 @@ export default async function Login() {
   const login_handler = async (event: any) => {
       event.preventDefault()
 
+      const axios = require('axios');
       const data = {
         username: event.target.username.value,
         password: event.target.password.value,
@@ -30,20 +31,48 @@ export default async function Login() {
         body: JSONdata
       }
       
-      const response = await fetch(endpoint, options)
-      const res = await response.json()
-
-      if (response.status == 200) {
+      let config = {
+        method: 'post',
+        url: endpoint,
+        headers: { 
+          'Content-Type': 'application/json',
+        },
+        data : JSONdata
+      };
+      axios.request(config)
+      .then((response:any) => {
+        if (response.status == 200) {
+          const res : any = (response.data)
+          console.log('token',res);
+          
+          setCookie('token',res['access'],{path:'/',secure:true,maxAge:3600})
+          router.replace('/login')
+          toast.success("Cheers!")
+          router.push("/profile")
         
+        } else {
+          toast.error("noo")
+        }})
+      // const response = await fetch(endpoint, options)
+      // const res = await response.json()
+      // if (response.status == 200) {
       
-        setCookie('token',res['access'],{path:'/',secure:true,maxAge:3600})
-        router.replace('/login')
-        toast.success("cheers")
-        router.push("/profile")
+      //   setCookie('token',res['access'],{path:'/',secure:true,maxAge:3600})
+      //   router.replace('/login')
+      //   toast.success("cheers")
+      //   router.push("/profile")
       
-      } else {
-        toast.error("noo")
-      }
+      // } else {
+      //   toast.error("noo")
+      // }
+      
+      
+        
+    
+    // .catch((error:any) => {
+    //   console.log(error);
+    // });
+
     }
 
 
