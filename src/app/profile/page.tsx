@@ -11,14 +11,11 @@ import {
   Accordion,
 } from "react-bootstrap";
 import SaveIcon from "@mui/icons-material/Save";
-import Fab from "@mui/material/Fab";
 import { useCookies } from "react-cookie";
 import { toast } from "react-hot-toast";
 import data from "./data.json";
 
-import Tooltip from "@mui/material/Tooltip";
 import { useRouter } from "next/navigation";
-import { ElevatorSharp } from "@mui/icons-material";
 
 interface UserData {
   username: string;
@@ -102,7 +99,7 @@ export default function ProfilePage() {
   const router = useRouter();
 
   const SaveClick = async () => {
-    const endpoint ="http://localhost:8000/api/auth/profile";
+    const endpoint = "http://localhost:8000/api/auth/profile";
     const data = {
       username: userData?.username,
       links: userData?.links,
@@ -118,7 +115,6 @@ export default function ProfilePage() {
     const response = await fetch(endpoint, options);
     if (response.ok) {
       toast("Your progress has been saved");
-      router.push("/profile");
     }
   };
 
@@ -133,6 +129,7 @@ export default function ProfilePage() {
       };
 
       try {
+        console.log(cookies['token'])
         const response = await fetch(endpoint, options);
         const data = await response.json();
         let obj: UserData = await JSON.parse(data);
@@ -213,22 +210,25 @@ export default function ProfilePage() {
   };
 
   return (
-    <center>
-      <Card style={styles.container}>
+    <Card style={styles.container}>
+      <center>
+        <Card.Title className="mb-4 fw-bold display-4">User Profile</Card.Title>
+      </center>
+      {loading ? (
+        <div className="d-flex justify-content-center my-4">
+          <Spinner animation="border" role="status" variant="light">
+            <span className="visually-hidden">Loading...</span>
+          </Spinner>
+        </div>
+      ) : (
         <Card.Body>
-          <Card.Title className="mb-4 fw-bold display-4">User Profile</Card.Title>
-
-          {loading ? (
-            <div className="d-flex justify-content-center my-4">
-              <Spinner animation="border" role="status" variant="light">
-                <span className="visually-hidden">Loading...</span>
-              </Spinner>
-            </div>
-          ) : (
-            <Container>
-              {userData && (
+          <Container>
+            {userData && (
+              <center>
                 <Card style={styles.card}>
-                  <Card.Title className="fw-bold h5 mb-4">Profile Information</Card.Title>
+                  <Card.Title className="fw-bold h5 mb-4">
+                    Profile Information
+                  </Card.Title>
                   <ul className="list-unstyled">
                     <li>
                       <strong className="">First Name:</strong> {userData.fname}
@@ -241,151 +241,187 @@ export default function ProfilePage() {
                     </li>
                   </ul>
                 </Card>
-              )}
+              </center>
+            )}
 
-              <Card style={styles.card}>
-                <Card.Title className="fw-bold h5 mb-4">
-                  <Alert key="primary" variant="primary">
-                    Save your progress before leaving by clicking the button in bottom right
-                  </Alert>
-                </Card.Title>
-                {stepData.length > 0 &&
-                  stepData.map((step: StepData, index: number) => {
-                    const subHeadings = step.sub_headings || [];
-                    const urls = step.urls || [];
+            <Card style={styles.card}>
+              <Card.Title className="fw-bold h5 mb-4">
+                <Alert key="primary" variant="primary">
+                  <center>Your Journey to a CP Gawd!</center>
+                </Alert>
+              </Card.Title>
+              {stepData.length > 0 &&
+                stepData.map((step: StepData, index: number) => {
+                  const subHeadings = step.sub_headings || [];
+                  const urls = step.urls || [];
 
-                    return (
-                      <Card
-                        style={styles.card}
-                        key={index}
-                      >
-                        <Accordion defaultActiveKey="0">
-                          <Accordion.Item eventKey="{index}">
-                            <Accordion.Header>{step.heading}</Accordion.Header>
-                            <Accordion.Body>
-                              {subHeadings.length > 0 &&
-                                subHeadings.map(
-                                  (subHeading: string, subIndex: number) => {
-                                    const urlData: UrlData[] =
-                                      urls[subIndex] || [];
-                                    return (
-                                      <Accordion defaultActiveKey="0" key={subIndex}>
-                                        <Accordion.Header>
-                                          {subHeading}
-                                        </Accordion.Header>
-                                        <Accordion.Body>
-                                          {urlData.length > 0 &&
-                                            urlData.map(
-                                              (
-                                                urlObj: any,
-                                                innerIndex: number
-                                              ) => {
-                                                const innerKey =
-                                                  Object.keys(urlObj)[0];
+                  return (
+                    <Card style={styles.card} key={index}>
+                      <Accordion defaultActiveKey="0">
+                        <Accordion.Item eventKey="{index}">
+                          <Accordion.Header>{step.heading}</Accordion.Header>
+                          <Accordion.Body>
+                            {subHeadings.length > 0 &&
+                              subHeadings.map(
+                                (subHeading: string, subIndex: number) => {
+                                  const urlData: UrlData[] =
+                                    urls[subIndex] || [];
+                                  return (
+                                    <Accordion
+                                      defaultActiveKey="0"
+                                      key={subIndex}
+                                    >
+                                      <Accordion.Header>
+                                        {subHeading}
+                                      </Accordion.Header>
+                                      <Accordion.Body>
+                                        {urlData.length > 0 &&
+                                          urlData.map(
+                                            (
+                                              urlObj: any,
+                                              innerIndex: number
+                                            ) => {
+                                              const innerKey =
+                                                Object.keys(urlObj)[0];
 
-                                                let { topic, link, status } =
-                                                  urlObj[innerKey];
-                                                status =
-                                                  parsed == null
-                                                    ? status
-                                                    : parsed[topic];
-                                                return (
-                                                  <Card
-                                                    style={styles.card}
-                                                    key={innerIndex}
-                                                  >
-                                                    <Card.Title className="fw-bold h5 mb-4">
+                                              let { topic, link, status } =
+                                                urlObj[innerKey];
+                                              status =
+                                                parsed == null
+                                                  ? status
+                                                  : parsed[topic];
+                                              return (
+                                                <Card
+                                                  style={styles.card}
+                                                  key={innerIndex}
+                                                >
+                                                  <center>
+                                                    <Card.Title className="fw-bold h5 mb-4 mt-2">
                                                       {topic}
                                                     </Card.Title>
-                                                    <ul className="list-unstyled">
-                                                      <li>
-                                                        <Button
-                                                          style={styles.button}
-                                                          variant="outline-light"
-                                                        >
-                                                          {link === "NO-URL" ? (
-                                                            <a
-                                                              href=""
-                                                              target="_blank"
-                                                              style={styles.link}
-                                                            >
-                                                              NO-URL available
-                                                            </a>
-                                                          ) : (
+                                                  </center>
+                                                  <ul className="list-unstyled">
+                                                    <li>
+                                                      {link === "NO-URL" ? (
+                                                        <center>
+                                                          <div>
+                                                            NO-URL available
+                                                          </div>
+                                                        </center>
+                                                      ) : (
+                                                        <>
+                                                          <Button
+                                                            style={
+                                                              // styles.button,
+                                                              {
+                                                                position:
+                                                                  "absolute",
+                                                                left: "10px",
+                                                                bottom: "10px",
+                                                              }
+                                                            }
+                                                            variant="outline-light"
+                                                          >
                                                             <a
                                                               href={link}
                                                               target="_blank"
-                                                              style={styles.link}
+                                                              style={{
+                                                                color:
+                                                                  "#61dafb",
+                                                              }}
+                                                              onClick={() => {
+                                                                status_click(
+                                                                  "visited",
+                                                                  index,
+                                                                  subIndex,
+                                                                  innerIndex,
+                                                                  innerKey,
+                                                                  topic
+                                                                );
+                                                                SaveClick();
+                                                              }}
                                                             >
                                                               Solve
                                                             </a>
-                                                          )}
-                                                        </Button>
-                                                        <br />
-                                                        <DropdownButton
-                                                          style={styles.button}
-                                                          variant="dark"
-                                                          title={status}
-                                                        >
-                                                          <Dropdown.Item
-                                                            onClick={() => {
-                                                              status_click(
-                                                                "visited",
-                                                                index,
-                                                                subIndex,
-                                                                innerIndex,
-                                                                innerKey,
-                                                                topic
-                                                              );
+                                                          </Button>
+
+                                                          <br />
+                                                          <DropdownButton
+                                                            style={{
+                                                              color: "#61dafb",
+                                                              position:
+                                                                "absolute",
+                                                              right: "10px",
+                                                              bottom: "10px",
+
+                                                              textDecoration:
+                                                                "none",
                                                             }}
+                                                            variant="outline-light"
+                                                            title={status}
                                                           >
-                                                            Visited
-                                                          </Dropdown.Item>
-                                                          <Dropdown.Item
-                                                            onClick={() => {
-                                                              status_click(
-                                                                "unvisited",
-                                                                index,
-                                                                subIndex,
-                                                                innerIndex,
-                                                                innerKey,
-                                                                topic
-                                                              );
-                                                            }}
-                                                          >
-                                                            Unvisited
-                                                          </Dropdown.Item>
-                                                        </DropdownButton>
-                                                      </li>
-                                                    </ul>
-                                                  </Card>
-                                                );
-                                              }
-                                            )}
-                                        </Accordion.Body>
-                                      </Accordion>
-                                    );
-                                  }
-                                )}
-                            </Accordion.Body>
-                          </Accordion.Item>
-                        </Accordion>
-                      </Card>
-                    );
-                  })}
-              </Card>
-            </Container>
-          )}
+                                                            <Dropdown.Item
+                                                              style={{
+                                                                color:
+                                                                  "#61dafb",
+                                                              }}
+                                                              onClick={() => {
+                                                                status_click(
+                                                                  "visited",
+                                                                  index,
+                                                                  subIndex,
+                                                                  innerIndex,
+                                                                  innerKey,
+                                                                  topic
+                                                                );
+                                                                SaveClick();
+                                                              }}
+                                                            >
+                                                              Visited
+                                                            </Dropdown.Item>
+                                                            <Dropdown.Item
+                                                              style={{
+                                                                color:
+                                                                  "#61dafb",
+                                                              }}
+                                                              onClick={() => {
+                                                                status_click(
+                                                                  "unvisited",
+                                                                  index,
+                                                                  subIndex,
+                                                                  innerIndex,
+                                                                  innerKey,
+                                                                  topic
+                                                                );
+                                                                SaveClick();
+                                                              }}
+                                                            >
+                                                              Unvisited
+                                                            </Dropdown.Item>
+                                                          </DropdownButton>
+                                                        </>
+                                                      )}
+                                                    </li>
+                                                  </ul>
+                                                </Card>
+                                              );
+                                            }
+                                          )}
+                                      </Accordion.Body>
+                                    </Accordion>
+                                  );
+                                }
+                              )}
+                          </Accordion.Body>
+                        </Accordion.Item>
+                      </Accordion>
+                    </Card>
+                  );
+                })}
+            </Card>
+          </Container>
         </Card.Body>
-      </Card>
-      <Fab
-        sx={fab.sx}
-        aria-label={fab.label}
-        color={fab.color}
-        onClick={SaveClick}
-      >
-        {fab.icon}
-      </Fab>
-    </center>
+      )}
+    </Card>
   );
 }
