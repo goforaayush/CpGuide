@@ -26,7 +26,7 @@ export default async function SignUp() {
     };
 
     const JSONdata = JSON.stringify(data);
-    const endpoint = "http://localhost:8000/api/auth/signup";
+    const endpoint = process.env.NEXT_PUBLIC_SIGNUP_URL;
     let config = {
       method: 'post',
       url: endpoint,

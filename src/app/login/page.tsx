@@ -21,15 +21,7 @@ export default async function Login() {
       }
 
       const JSONdata = JSON.stringify(data)
-      const endpoint = "http://localhost:8000/api/auth/login"
-      const options = {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-
-        },
-        body: JSONdata
-      }
+      const endpoint = process.env.NEXT_PUBLIC_LOGIN_URL
       
       let config = {
         method: 'post',
@@ -49,11 +41,19 @@ export default async function Login() {
           router.replace('/login')
           toast.success("Cheers!")
           router.push("/profile")
-        
+          
         } else {
           toast.error("noo")
         }})
-      // const response = await fetch(endpoint, options)
+        // const options = {
+        //   method: 'POST',
+        //   headers: {
+        //     'Content-Type': 'application/json',
+  
+        //   },
+        //   body: JSONdata
+        // }
+        // const response = await fetch(endpoint, options)
       // const res = await response.json()
       // if (response.status == 200) {
       

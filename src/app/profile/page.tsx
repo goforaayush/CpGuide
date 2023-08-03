@@ -102,7 +102,7 @@ export default function ProfilePage() {
     console.log("saveclick ");
     
     const axios = require('axios');
-    const endpoint = "http://localhost:8000/api/auth/profile";
+    const endpoint = process.env.NEXT_PUBLIC_PROFILE_URL;
     const data = {
       username: userData?.username,
       links: userData?.links,
@@ -145,7 +145,7 @@ export default function ProfilePage() {
     const fetchProfileData = async () => {
       console.log("hi",cookies['token'])
       const axios = require('axios');
-    const endpoint = "http://localhost:8000/api/auth/profile";
+    const endpoint = process.env.NEXT_PUBLIC_PROFILE_URL;
     
     let config = {
       method: 'get',
