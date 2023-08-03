@@ -99,6 +99,7 @@ export default function ProfilePage() {
   // const router = useRouter();
 
   const SaveClick = async () => {
+
     console.log("saveclick ");
     
     const axios = require('axios');
@@ -260,7 +261,7 @@ export default function ProfilePage() {
     }
   };
 
-  return (
+
     <Card style={styles.container}>
       <center>
         <Card.Title className="mb-4 fw-bold display-4">User Profile</Card.Title>
