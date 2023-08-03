@@ -12,19 +12,31 @@ export async function middleware(request: NextRequest) {
   }
 
   if (request.nextUrl.pathname.startsWith("/login") && token) {
+    const axios = require('axios');
     const endpoint = "http://127.0.0.1:8000/api/auth/profile";
-    const options = {
-      method: "GET",
-      headers: {
-        Authorization: "Bearer " + token,
+    
+    let config = {
+      method: 'get',
+      url: endpoint,
+      headers: { 
+        'Authorization': 'Bearer '+token
       },
     };
+    axios.request(config)
+    .then((response:any) => {
+      if(response.status <400){
+        return NextResponse.redirect(new URL("/profile", request.url));
+      }
+    })
+    .catch((error:any) => {
+      console.log(error);
+    });
 
-    const response = await fetch(endpoint, options);
-    const res = await response.json();
-    if(response.status <400){
-    return NextResponse.redirect(new URL("/profile", request.url));
-  }
+    // const response = await fetch(endpoint, options);
+    // const res = await response.json();
+    // if(response.status <400){
+    // return NextResponse.redirect(new URL("/profile", request.url));
+  // }
 }
 
   if (request.nextUrl.pathname.startsWith("/logout") && !token) {

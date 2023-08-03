@@ -8,9 +8,9 @@ interface ErrorPageProp{
 }
 
 export default function Error({error,reset}:ErrorPageProp){
-    return <div>
-        <h1>ERROR HOGYA</h1>
+    return <center>
+        <h1>Unexpected error occured</h1>
         <Button onClick={reset}>Try Again</Button>
         
-        </div>
+        </center>
 }
