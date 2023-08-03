@@ -96,57 +96,108 @@ export default function ProfilePage() {
     icon: <SaveIcon />,
     label: "Add",
   };
-  const router = useRouter();
+  // const router = useRouter();
 
   const SaveClick = async () => {
-    const endpoint = "http://localhost:8000/api/auth/profile";
+    console.log("saveclick ");
+    
+    const axios = require('axios');
+    const endpoint = process.env.NEXT_PUBLIC_PROFILE_URL;
     const data = {
       username: userData?.username,
       links: userData?.links,
     };
-    const options = {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + cookies["token"],
-        "Content-Type": "application/json",
+    let config = {
+      method: 'post',
+      url: endpoint,
+      headers: { 
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer '+cookies["token"]
       },
-      body: JSON.stringify(data),
+      data: JSON.stringify(data)
     };
-    const response = await fetch(endpoint, options);
-    if (response.ok) {
-      toast("Your progress has been saved");
-    }
+    axios.request(config)
+    .then((response:any) => {
+      console.log(response.status);
+      
+      if(response.status==200){
+        toast("Your progress has been saved");
+      }
+    })
+    .catch((error:any) => {
+      console.log(error);
+    });
+    // const options = {
+    //   method: "POST",
+    //   headers: {
+    //     Authorization: "Bearer " + cookies["token"],
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(data),
+    // };
+    // const response = await fetch(endpoint, options);
+    // if (response.ok) {
+    //   toast("Your progress has been saved");
+    // }
   };
 
   useEffect(() => {
     const fetchProfileData = async () => {
-      const endpoint = "http://localhost:8000/api/auth/profile";
-      const options = {
-        method: "GET",
-        headers: {
-          Authorization: "Bearer " + cookies["token"],
-        },
-      };
-
-      try {
-        console.log(cookies['token'])
-        const response = await fetch(endpoint, options);
-        const data = await response.json();
-        let obj: UserData = await JSON.parse(data);
-
-        if (response.ok) {
+      console.log("hi",cookies['token'])
+      const axios = require('axios');
+    const endpoint = process.env.NEXT_PUBLIC_PROFILE_URL;
+    
+    let config = {
+      method: 'get',
+      url: endpoint,
+      headers: { 
+        'Authorization': 'Bearer '+cookies["token"]
+      },
+    };
+    axios.request(config)
+    .then((response:any) => {
+      let obj = JSON.parse(response.data)
+      console.log(obj);
+      
+        if (response.status==200) {
           setUserData(obj);
 
           var d1 = JSON.parse(obj.links);
           setParsed(d1);
         }
-      } catch (error) {
+        setLoading(false);
+    })
+    .catch((error:any) => {
         console.error("Error fetching profile data:", error);
         toast.error("Error fetching profile data");
         setUserData(null);
-      } finally {
         setLoading(false);
-      }
+    });
+      // const options = {
+      //   method: "GET",
+      //   headers: {
+      //     Authorization: "Bearer " + cookies["token"],
+      //   },
+      // };
+
+      // try {
+      //   const response = await fetch(endpoint, options);
+      //   const data = await response.json();
+      //   let obj: UserData = await JSON.parse(data);
+
+      //   if (response.ok) {
+      //     setUserData(obj);
+
+      //     var d1 = JSON.parse(obj.links);
+      //     setParsed(d1);
+      //   }
+      // } catch (error) {
+      //   console.error("Error fetching profile data:", error);
+      //   toast.error("Error fetching profile data");
+      //   setUserData(null);
+      // } finally {
+      //   setLoading(false);
+      // }
     };
 
     fetchProfileData();

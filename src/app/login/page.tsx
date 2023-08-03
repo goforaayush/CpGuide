@@ -14,36 +14,65 @@ export default async function Login() {
   const login_handler = async (event: any) => {
       event.preventDefault()
 
+      const axios = require('axios');
       const data = {
         username: event.target.username.value,
         password: event.target.password.value,
       }
 
       const JSONdata = JSON.stringify(data)
-      const endpoint = "http://localhost:8000/api/auth/login"
-      const options = {
-        method: 'POST',
-        headers: {
+      const endpoint = process.env.NEXT_PUBLIC_LOGIN_URL
+      
+      let config = {
+        method: 'post',
+        url: endpoint,
+        headers: { 
           'Content-Type': 'application/json',
-
         },
-        body: JSONdata
-      }
+        data : JSONdata
+      };
+      axios.request(config)
+      .then((response:any) => {
+        if (response.status == 200) {
+          const res : any = (response.data)
+          console.log('token',res);
+          
+          setCookie('token',res['access'],{path:'/',secure:true,maxAge:3600})
+          router.replace('/login')
+          toast.success("Cheers!")
+          router.push("/profile")
+          
+        } else {
+          toast.error("noo")
+        }})
+        // const options = {
+        //   method: 'POST',
+        //   headers: {
+        //     'Content-Type': 'application/json',
+  
+        //   },
+        //   body: JSONdata
+        // }
+        // const response = await fetch(endpoint, options)
+      // const res = await response.json()
+      // if (response.status == 200) {
       
-      const response = await fetch(endpoint, options)
-      const res = await response.json()
-
-      if (response.status == 200) {
+      //   setCookie('token',res['access'],{path:'/',secure:true,maxAge:3600})
+      //   router.replace('/login')
+      //   toast.success("cheers")
+      //   router.push("/profile")
+      
+      // } else {
+      //   toast.error("noo")
+      // }
+      
+      
         
-      
-        setCookie('token',res['access'],{path:'/',secure:true,maxAge:3600})
-        router.replace('/login')
-        toast.success("cheers")
-        router.push("/profile")
-      
-      } else {
-        toast.error("noo")
-      }
+    
+    // .catch((error:any) => {
+    //   console.log(error);
+    // });
+
     }
 
 
