@@ -45,11 +45,12 @@ interface SubHeadings {
   map(arg0: (subheading: SubHeadings, subIndex: number) => import("react").JSX.Element): import("react").ReactNode;
   length: number;
   sub_heading: string;
-  subheading_id: string;
+  sub_heading_id: number;
   questions: Questions;
 }
 
 interface Questions {
+  length: number;
   map(arg0: (urlObj: any, innerIndex: number) => import("react").JSX.Element): import("react").ReactNode;
   topic_id: number;
   link: string;
@@ -169,25 +170,24 @@ export default function ProfilePage() {
 
       const stepData =  response.data.questions.reduce((acc, question) => {
         const { heading, heading_id, sub_heading, sub_heading_id, link, topic_id } = question;
-    
-        // Find or create the heading in the accumulator
+  
         let headingObj = acc.find((item) => item.heading_id === heading_id);
         if (!headingObj) {
           headingObj = { heading_id, heading, subheadings: [] };
           acc.push(headingObj);
         }
     
-        // Find or create the subheading in the heading
+ 
         let subheadingObj = headingObj.subheadings.find((item) => item.sub_heading_id === sub_heading_id);
         if (!subheadingObj) {
           subheadingObj = { sub_heading_id, sub_heading, questions: [] };
           headingObj.subheadings.push(subheadingObj);
         }
     
-        // Add the question to the subheading
+    
         subheadingObj.questions.push({ topic_id, link });
     
-        console.log(acc)
+      
         setStepData(acc)
         return acc;
       }, []);
@@ -232,7 +232,7 @@ export default function ProfilePage() {
       userDataCopy.links = JSON.stringify(parsed);
       setUserData(userDataCopy);
 
-      // setStepData(copyData);
+      setStepData(copyData);
     } else if (token === "unvisited") {
       copyData[index].urls[subIndex][innerIndex][innerKey].status = token;
 
@@ -289,8 +289,6 @@ export default function ProfilePage() {
                 {stepData.length > 0 &&
                   stepData.map((step: StepData, index: number) => {
                     const subHeadings = step.subheadings || [];
-                    console.log(subHeadings)
-
                     return (
                       <Card
                         style={styles.card}
@@ -303,9 +301,6 @@ export default function ProfilePage() {
                               {subHeadings.length > 0 &&
                                 subHeadings.map(
                                   (subheading:SubHeadings , subIndex:number) => {
-                                    console.log(subHeadings.questions)
-                                    
-                                    // console.log(questions)
                                     return (
                                       <Accordion
                                         defaultActiveKey={String(subIndex)}
@@ -319,7 +314,7 @@ export default function ProfilePage() {
                                           {subheading.questions.length > 0 &&
                                             subheading.questions.map(
                                               (
-                                                question: Question,
+                                                question: Questions,
                                                 questionIndex: number
                                               ) => {
                                                 return (
