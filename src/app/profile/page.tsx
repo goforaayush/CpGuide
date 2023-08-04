@@ -19,6 +19,7 @@ import data from "./data.json";
 import Tooltip from "@mui/material/Tooltip";
 import { useRouter } from "next/navigation";
 import { ElevatorSharp } from "@mui/icons-material";
+import { fetchQuestionData } from "@/api/fetchQuestionData";
 
 interface UserData {
   username: string;
@@ -36,8 +37,22 @@ interface UrlData {
 
 interface StepData {
   heading: string;
-  sub_headings: string[];
-  urls: any;
+  subheadings: SubHeadings;
+  links: any;
+}
+
+interface SubHeadings {
+  map(arg0: (subheading: SubHeadings, subIndex: number) => import("react").JSX.Element): import("react").ReactNode;
+  length: number;
+  sub_heading: string;
+  subheading_id: string;
+  questions: Questions;
+}
+
+interface Questions {
+  map(arg0: (urlObj: any, innerIndex: number) => import("react").JSX.Element): import("react").ReactNode;
+  topic_id: number;
+  link: string;
 }
 
 const styles = {
@@ -135,9 +150,6 @@ export default function ProfilePage() {
 
         if (response.ok) {
           setUserData(obj);
-
-          var d1 = JSON.parse(obj.links);
-          setParsed(d1);
         }
       } catch (error) {
         console.error("Error fetching profile data:", error);
@@ -152,14 +164,42 @@ export default function ProfilePage() {
   }, []);
 
   useEffect(() => {
-    const parsedData: StepData[] = Object.values(data).map((step: any) => ({
-      heading: step.heading,
-      sub_headings: step.sub_headings,
-      urls: step.urls,
-    }));
+    const fetchQuestions = async () => {
+      const response = await fetchQuestionData()
 
-    setStepData(parsedData);
+      const stepData =  response.data.questions.reduce((acc, question) => {
+        const { heading, heading_id, sub_heading, sub_heading_id, link, topic_id } = question;
+    
+        // Find or create the heading in the accumulator
+        let headingObj = acc.find((item) => item.heading_id === heading_id);
+        if (!headingObj) {
+          headingObj = { heading_id, heading, subheadings: [] };
+          acc.push(headingObj);
+        }
+    
+        // Find or create the subheading in the heading
+        let subheadingObj = headingObj.subheadings.find((item) => item.sub_heading_id === sub_heading_id);
+        if (!subheadingObj) {
+          subheadingObj = { sub_heading_id, sub_heading, questions: [] };
+          headingObj.subheadings.push(subheadingObj);
+        }
+    
+        // Add the question to the subheading
+        subheadingObj.questions.push({ topic_id, link });
+    
+        console.log(acc)
+        setStepData(acc)
+        return acc;
+      }, []);
 
+      
+    
+    
+    };
+
+    fetchQuestions()
+
+   
     setLoading(false);
   }, []);
 
@@ -192,7 +232,7 @@ export default function ProfilePage() {
       userDataCopy.links = JSON.stringify(parsed);
       setUserData(userDataCopy);
 
-      setStepData(copyData);
+      // setStepData(copyData);
     } else if (token === "unvisited") {
       copyData[index].urls[subIndex][innerIndex][innerKey].status = token;
 
@@ -248,8 +288,8 @@ export default function ProfilePage() {
                 </Card.Title>
                 {stepData.length > 0 &&
                   stepData.map((step: StepData, index: number) => {
-                    const subHeadings = step.sub_headings || [];
-                    const urls = step.urls || [];
+                    const subHeadings = step.subheadings || [];
+                    console.log(subHeadings)
 
                     return (
                       <Card
@@ -262,39 +302,35 @@ export default function ProfilePage() {
                             <Accordion.Body>
                               {subHeadings.length > 0 &&
                                 subHeadings.map(
-                                  (subHeading: string, subIndex: number) => {
-                                    const urlData: UrlData[] =
-                                      urls[subIndex] || [];
+                                  (subheading:SubHeadings , subIndex:number) => {
+                                    console.log(subHeadings.questions)
+                                    
+                                    // console.log(questions)
                                     return (
-                                      <Accordion defaultActiveKey="0" key={subIndex}>
+                                      <Accordion
+                                        defaultActiveKey={String(subIndex)}
+                                        key={subheading.sub_heading_id}
+                                      >
                                         <Accordion.Header>
-                                          {subHeading}
+                                          {subheading.sub_heading}
                                         </Accordion.Header>
-                                        <Accordion.Body>
-                                          {urlData.length > 0 &&
-                                            urlData.map(
-                                              (
-                                                urlObj: any,
-                                                innerIndex: number
-                                              ) => {
-                                                const innerKey =
-                                                  Object.keys(urlObj)[0];
 
-                                                let { topic, link, status } =
-                                                  urlObj[innerKey];
-                                                status =
-                                                  parsed == null
-                                                    ? status
-                                                    : parsed[topic];
+                                        <Accordion.Body>
+                                          {subheading.questions.length > 0 &&
+                                            subheading.questions.map(
+                                              (
+                                                question: Question,
+                                                questionIndex: number
+                                              ) => {
                                                 return (
                                                   <Card
+                                                    key={questionIndex}
                                                     style={styles.card}
-                                                    key={innerIndex}
                                                   >
                                                     <Card.Title className="fw-bold h5 mb-4">
-                                                      {topic}
+                                                      {question.topic_id}
                                                     </Card.Title>
-                                                    <ul className="list-unstyled">
+                                                    {/* <ul className="list-unstyled">
                                                       <li>
                                                         <Button
                                                           style={styles.button}
@@ -354,7 +390,7 @@ export default function ProfilePage() {
                                                           </Dropdown.Item>
                                                         </DropdownButton>
                                                       </li>
-                                                    </ul>
+                                                    </ul> */}
                                                   </Card>
                                                 );
                                               }
