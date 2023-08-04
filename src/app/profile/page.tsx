@@ -20,6 +20,7 @@ import Tooltip from "@mui/material/Tooltip";
 import { useRouter } from "next/navigation";
 import { ElevatorSharp } from "@mui/icons-material";
 import { fetchQuestionData } from "@/api/fetchQuestionData";
+import { createQuestions } from "@/utilities/createQuestionObject";
 
 interface UserData {
   username: string;
@@ -166,40 +167,12 @@ export default function ProfilePage() {
 
   useEffect(() => {
     const fetchQuestions = async () => {
-      const response = await fetchQuestionData()
-
-      const stepData =  response.data.questions.reduce((acc, question) => {
-        const { heading, heading_id, sub_heading, sub_heading_id, link, topic_id } = question;
-  
-        let headingObj = acc.find((item) => item.heading_id === heading_id);
-        if (!headingObj) {
-          headingObj = { heading_id, heading, subheadings: [] };
-          acc.push(headingObj);
-        }
-    
- 
-        let subheadingObj = headingObj.subheadings.find((item) => item.sub_heading_id === sub_heading_id);
-        if (!subheadingObj) {
-          subheadingObj = { sub_heading_id, sub_heading, questions: [] };
-          headingObj.subheadings.push(subheadingObj);
-        }
-    
-    
-        subheadingObj.questions.push({ topic_id, link });
-    
-      
-        setStepData(acc)
-        return acc;
-      }, []);
-
-      
-    
-    
+      const questions = await createQuestions()
+      console.log(questions)
+      setStepData(questions)
     };
 
     fetchQuestions()
-
-   
     setLoading(false);
   }, []);
 
@@ -323,15 +296,15 @@ export default function ProfilePage() {
                                                     style={styles.card}
                                                   >
                                                     <Card.Title className="fw-bold h5 mb-4">
-                                                      {question.topic_id}
+                                                      {question.topic}
                                                     </Card.Title>
-                                                    {/* <ul className="list-unstyled">
+                                                    <ul className="list-unstyled">
                                                       <li>
                                                         <Button
                                                           style={styles.button}
                                                           variant="outline-light"
                                                         >
-                                                          {link === "NO-URL" ? (
+                                                          {question.link === "NO-URL" ? (
                                                             <a
                                                               href=""
                                                               target="_blank"
@@ -341,7 +314,7 @@ export default function ProfilePage() {
                                                             </a>
                                                           ) : (
                                                             <a
-                                                              href={link}
+                                                              href={question.link}
                                                               target="_blank"
                                                               style={styles.link}
                                                             >
@@ -385,7 +358,7 @@ export default function ProfilePage() {
                                                           </Dropdown.Item>
                                                         </DropdownButton>
                                                       </li>
-                                                    </ul> */}
+                                                    </ul>
                                                   </Card>
                                                 );
                                               }
