@@ -43,7 +43,12 @@ interface StepData {
 }
 
 interface SubHeadings {
-  map(arg0: (subheading: SubHeadings, subIndex: number) => import("react").JSX.Element): import("react").ReactNode;
+  map(
+    arg0: (
+      subheading: SubHeadings,
+      subIndex: number
+    ) => import("react").JSX.Element
+  ): import("react").ReactNode;
   length: number;
   sub_heading: string;
   sub_heading_id: number;
@@ -52,7 +57,9 @@ interface SubHeadings {
 
 interface Questions {
   length: number;
-  map(arg0: (urlObj: any, innerIndex: number) => import("react").JSX.Element): import("react").ReactNode;
+  map(
+    arg0: (urlObj: any, innerIndex: number) => import("react").JSX.Element
+  ): import("react").ReactNode;
   topic_id: number;
   link: string;
 }
@@ -119,14 +126,14 @@ export default function ProfilePage() {
   const router = useRouter();
 
   const SaveClick = async () => {
-    const endpoint ="http://localhost:8000/api/auth/profile";
+    const endpoint = "http://localhost:8000/api/auth/profile";
     const options = {
       method: "POST",
       headers: {
         Authorization: "Bearer " + cookies["token"],
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({topic_id : "11B"}),   //this needs to be modified later
+      body: JSON.stringify({ topic_id: "11B" }), //this needs to be modified later
     };
     const response = await fetch(endpoint, options);
     if (response.ok) {
@@ -167,12 +174,12 @@ export default function ProfilePage() {
 
   useEffect(() => {
     const fetchQuestions = async () => {
-      const questions = await createQuestions()
-      console.log(questions)
-      setStepData(questions)
+      const questions = await createQuestions();
+      console.log(questions);
+      setStepData(questions);
     };
 
-    fetchQuestions()
+    fetchQuestions();
     setLoading(false);
   }, []);
 
@@ -237,20 +244,22 @@ export default function ProfilePage() {
           <Container>
             {userData && (
               <Card style={styles.card}>
-                <Card.Title className="fw-bold h5 mb-4">
-                  Profile Information
-                </Card.Title>
-                <ul className="list-unstyled">
-                  <li>
-                    <strong className="">First Name:</strong> {userData.fname}
-                  </li>
-                  <li>
-                    <strong className="">Last Name:</strong> {userData.lname}
-                  </li>
-                  <li>
-                    <strong className="">Email:</strong> {userData.email}
-                  </li>
-                </ul>
+                <center>
+                  <Card.Title className="fw-bold h5 mb-4">
+                    Profile Information
+                  </Card.Title>
+                  <ul className="list-unstyled">
+                    <li>
+                      <strong className="">First Name:</strong> {userData.fname}
+                    </li>
+                    <li>
+                      <strong className="">Last Name:</strong> {userData.lname}
+                    </li>
+                    <li>
+                      <strong className="">Email:</strong> {userData.email}
+                    </li>
+                  </ul>
+                </center>
               </Card>
             )}
 
@@ -295,11 +304,11 @@ export default function ProfilePage() {
                                                   style={styles.card}
                                                 >
                                                   <center>
-                                                  <Card.Title className="fw-bold h5 mb-4">
-                                                    {question.topic}
-                                                  </Card.Title>
+                                                    <Card.Title className="fw-bold h5 mb-4">
+                                                      {question.topic}
+                                                    </Card.Title>
                                                   </center>
-                                                
+
                                                   <ul className="list-unstyled">
                                                     <li>
                                                       {/* <Button
@@ -325,7 +334,8 @@ export default function ProfilePage() {
                                                           </a>
                                                         )}
                                                       </Button> */}
-                                                      {question.link === "NO-URL" ? (
+                                                      {question.link ===
+                                                      "NO-URL" ? (
                                                         <center>
                                                           <div>
                                                             NO-URL available
@@ -346,38 +356,39 @@ export default function ProfilePage() {
                                                             variant="outline-light"
                                                           >
                                                             <a
-                                                              href={question.link}
+                                                              href={
+                                                                question.link
+                                                              }
                                                               target="_blank"
                                                               style={{
                                                                 color:
                                                                   "#61dafb",
-                                                              }}>
+                                                              }}
+                                                            >
                                                               Solve
                                                             </a>
-                                                          </Button> 
-                                                          </>
-                                                          )}
+                                                          </Button>
+                                                        </>
+                                                      )}
 
                                                       <br />
                                                       <DropdownButton
-                                                            style={{
-                                                              color: "#61dafb",
-                                                              position:
-                                                                "absolute",
-                                                              right: "10px",
-                                                              bottom: "10px",
+                                                        style={{
+                                                          color: "#61dafb",
+                                                          position: "absolute",
+                                                          right: "10px",
+                                                          bottom: "10px",
 
-                                                              textDecoration:
-                                                                "none",
-                                                            }}
-                                                            variant="outline-light"
-                                                            title={status}
-                                                          >
-                                                        <Dropdown.Item
-                                                         style={{
-                                                          color:
-                                                            "#61dafb",
+                                                          textDecoration:
+                                                            "none",
                                                         }}
+                                                        variant="outline-light"
+                                                        title={status}
+                                                      >
+                                                        <Dropdown.Item
+                                                          style={{
+                                                            color: "#61dafb",
+                                                          }}
                                                           onClick={() =>
                                                             setStatus("visited")
                                                           }
@@ -385,12 +396,13 @@ export default function ProfilePage() {
                                                           Visited
                                                         </Dropdown.Item>
                                                         <Dropdown.Item
-                                                         style={{
-                                                          color:
-                                                            "#61dafb",
-                                                        }}
+                                                          style={{
+                                                            color: "#61dafb",
+                                                          }}
                                                           onClick={() =>
-                                                            setStatus("unvisited")
+                                                            setStatus(
+                                                              "unvisited"
+                                                            )
                                                           }
                                                         >
                                                           Unvisited
