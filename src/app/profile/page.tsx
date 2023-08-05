@@ -329,31 +329,11 @@ export default function ProfilePage() {
                                                           title={status}
                                                         >
                                                           <Dropdown.Item
-                                                            onClick={() => {
-                                                              status_click(
-                                                                "visited",
-                                                                index,
-                                                                subIndex,
-                                                                innerIndex,
-                                                                innerKey,
-                                                                topic
-                                                              );
-                                                            }}
-                                                          >
+                                                          onClick={() => setStatus("visited")}>
                                                             Visited
                                                           </Dropdown.Item>
                                                           <Dropdown.Item
-                                                            onClick={() => {
-                                                              status_click(
-                                                                "unvisited",
-                                                                index,
-                                                                subIndex,
-                                                                innerIndex,
-                                                                innerKey,
-                                                                topic
-                                                              );
-                                                            }}
-                                                          >
+                                                           onClick={() => setStatus("visited")}>
                                                             Unvisited
                                                           </Dropdown.Item>
                                                         </DropdownButton>
