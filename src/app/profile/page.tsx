@@ -222,151 +222,209 @@ export default function ProfilePage() {
   };
 
   return (
-    <center>
-      <button onClick={SaveClick}> test me </button>
-      <Card style={styles.container}>
+    <Card style={styles.container}>
+      <center>
+        <Card.Title className="mb-4 fw-bold display-4">User Profile</Card.Title>
+      </center>
+      {loading ? (
+        <div className="d-flex justify-content-center my-4">
+          <Spinner animation="border" role="status" variant="light">
+            <span className="visually-hidden">Loading...</span>
+          </Spinner>
+        </div>
+      ) : (
         <Card.Body>
-          <Card.Title className="mb-4 fw-bold display-4">User Profile</Card.Title>
-
-          {loading ? (
-            <div className="d-flex justify-content-center my-4">
-              <Spinner animation="border" role="status" variant="light">
-                <span className="visually-hidden">Loading...</span>
-              </Spinner>
-            </div>
-          ) : (
-            <Container>
-              {userData && (
-                <Card style={styles.card}>
-                  <Card.Title className="fw-bold h5 mb-4">Profile Information</Card.Title>
-                  <ul className="list-unstyled">
-                    <li>
-                      <strong className="">First Name:</strong> {userData.fname}
-                    </li>
-                    <li>
-                      <strong className="">Last Name:</strong> {userData.lname}
-                    </li>
-                    <li>
-                      <strong className="">Email:</strong> {userData.email}
-                    </li>
-                  </ul>
-                </Card>
-              )}
-
+          <Container>
+            {userData && (
               <Card style={styles.card}>
                 <Card.Title className="fw-bold h5 mb-4">
-                  <Alert key="primary" variant="primary">
-                    Save your progress before leaving by clicking the button in bottom right
-                  </Alert>
+                  Profile Information
                 </Card.Title>
-                {stepData.length > 0 &&
-                  stepData.map((step: StepData, index: number) => {
-                    const subHeadings = step.subheadings || [];
-                    return (
-                      <Card
-                        style={styles.card}
-                        key={index}
-                      >
-                        <Accordion defaultActiveKey="0">
-                          <Accordion.Item eventKey="{index}">
-                            <Accordion.Header>{step.heading}</Accordion.Header>
-                            <Accordion.Body>
-                              {subHeadings.length > 0 &&
-                                subHeadings.map(
-                                  (subheading:SubHeadings , subIndex:number) => {
-                                    return (
-                                      <Accordion
-                                        defaultActiveKey={String(subIndex)}
-                                        key={subheading.sub_heading_id}
-                                      >
-                                        <Accordion.Header>
-                                          {subheading.sub_heading}
-                                        </Accordion.Header>
+                <ul className="list-unstyled">
+                  <li>
+                    <strong className="">First Name:</strong> {userData.fname}
+                  </li>
+                  <li>
+                    <strong className="">Last Name:</strong> {userData.lname}
+                  </li>
+                  <li>
+                    <strong className="">Email:</strong> {userData.email}
+                  </li>
+                </ul>
+              </Card>
+            )}
 
-                                        <Accordion.Body>
-                                          {subheading.questions.length > 0 &&
-                                            subheading.questions.map(
-                                              (
-                                                question: Questions,
-                                                questionIndex: number
-                                              ) => {
-                                                return (
-                                                  <Card
-                                                    key={questionIndex}
-                                                    style={styles.card}
-                                                  >
-                                                    <Card.Title className="fw-bold h5 mb-4">
-                                                      {question.topic}
-                                                    </Card.Title>
-                                                    <ul className="list-unstyled">
-                                                      <li>
-                                                        <Button
-                                                          style={styles.button}
-                                                          variant="outline-light"
-                                                        >
-                                                          {question.link === "NO-URL" ? (
-                                                            <a
-                                                              href=""
-                                                              target="_blank"
-                                                              style={styles.link}
-                                                            >
-                                                              NO-URL available
-                                                            </a>
-                                                          ) : (
+            <Card style={styles.card}>
+              <Card.Title className="fw-bold h5 mb-4">
+                <Alert key="primary" variant="primary">
+                  Save your progress before leaving by clicking the button in
+                  bottom right
+                </Alert>
+              </Card.Title>
+              {stepData.length > 0 &&
+                stepData.map((step: StepData, index: number) => {
+                  const subHeadings = step.subheadings || [];
+                  return (
+                    <Card style={styles.card} key={index}>
+                      <Accordion defaultActiveKey="0">
+                        <Accordion.Item eventKey="{index}">
+                          <Accordion.Header>{step.heading}</Accordion.Header>
+                          <Accordion.Body>
+                            {subHeadings.length > 0 &&
+                              subHeadings.map(
+                                (subheading: SubHeadings, subIndex: number) => {
+                                  return (
+                                    <Accordion
+                                      defaultActiveKey={String(subIndex)}
+                                      key={subheading.sub_heading_id}
+                                    >
+                                      <Accordion.Header>
+                                        {subheading.sub_heading}
+                                      </Accordion.Header>
+
+                                      <Accordion.Body>
+                                        {subheading.questions.length > 0 &&
+                                          subheading.questions.map(
+                                            (
+                                              question: Questions,
+                                              questionIndex: number
+                                            ) => {
+                                              return (
+                                                <Card
+                                                  key={questionIndex}
+                                                  style={styles.card}
+                                                >
+                                                  <center>
+                                                  <Card.Title className="fw-bold h5 mb-4">
+                                                    {question.topic}
+                                                  </Card.Title>
+                                                  </center>
+                                                
+                                                  <ul className="list-unstyled">
+                                                    <li>
+                                                      {/* <Button
+                                                        style={styles.button}
+                                                        variant="outline-light"
+                                                      >
+                                                        {question.link ===
+                                                        "NO-URL" ? (
+                                                          <a
+                                                            href=""
+                                                            target="_blank"
+                                                            style={styles.link}
+                                                          >
+                                                            NO-URL available
+                                                          </a>
+                                                        ) : (
+                                                          <a
+                                                            href={question.link}
+                                                            target="_blank"
+                                                            style={styles.link}
+                                                          >
+                                                            Solve
+                                                          </a>
+                                                        )}
+                                                      </Button> */}
+                                                      {question.link === "NO-URL" ? (
+                                                        <center>
+                                                          <div>
+                                                            NO-URL available
+                                                          </div>
+                                                        </center>
+                                                      ) : (
+                                                        <>
+                                                          <Button
+                                                            style={
+                                                              // styles.button,
+                                                              {
+                                                                position:
+                                                                  "absolute",
+                                                                left: "10px",
+                                                                bottom: "10px",
+                                                              }
+                                                            }
+                                                            variant="outline-light"
+                                                          >
                                                             <a
                                                               href={question.link}
                                                               target="_blank"
-                                                              style={styles.link}
-                                                            >
+                                                              style={{
+                                                                color:
+                                                                  "#61dafb",
+                                                              }}>
                                                               Solve
                                                             </a>
+                                                          </Button> 
+                                                          </>
                                                           )}
-                                                        </Button>
-                                                        <br />
-                                                        <DropdownButton
-                                                          style={styles.button}
-                                                          variant="dark"
-                                                          title={status}
+
+                                                      <br />
+                                                      <DropdownButton
+                                                            style={{
+                                                              color: "#61dafb",
+                                                              position:
+                                                                "absolute",
+                                                              right: "10px",
+                                                              bottom: "10px",
+
+                                                              textDecoration:
+                                                                "none",
+                                                            }}
+                                                            variant="outline-light"
+                                                            title={status}
+                                                          >
+                                                        <Dropdown.Item
+                                                         style={{
+                                                          color:
+                                                            "#61dafb",
+                                                        }}
+                                                          onClick={() =>
+                                                            setStatus("visited")
+                                                          }
                                                         >
-                                                          <Dropdown.Item
-                                                          onClick={() => setStatus("visited")}>
-                                                            Visited
-                                                          </Dropdown.Item>
-                                                          <Dropdown.Item
-                                                           onClick={() => setStatus("visited")}>
-                                                            Unvisited
-                                                          </Dropdown.Item>
-                                                        </DropdownButton>
-                                                      </li>
-                                                    </ul>
-                                                  </Card>
-                                                );
-                                              }
-                                            )}
-                                        </Accordion.Body>
-                                      </Accordion>
-                                    );
-                                  }
-                                )}
-                            </Accordion.Body>
-                          </Accordion.Item>
-                        </Accordion>
-                      </Card>
-                    );
-                  })}
-              </Card>
-            </Container>
-          )}
+                                                          Visited
+                                                        </Dropdown.Item>
+                                                        <Dropdown.Item
+                                                         style={{
+                                                          color:
+                                                            "#61dafb",
+                                                        }}
+                                                          onClick={() =>
+                                                            setStatus("unvisited")
+                                                          }
+                                                        >
+                                                          Unvisited
+                                                        </Dropdown.Item>
+                                                      </DropdownButton>
+                                                    </li>
+                                                  </ul>
+                                                </Card>
+                                              );
+                                            }
+                                          )}
+                                      </Accordion.Body>
+                                    </Accordion>
+                                  );
+                                }
+                              )}
+                          </Accordion.Body>
+                        </Accordion.Item>
+                      </Accordion>
+                    </Card>
+                  );
+                })}
+            </Card>
+          </Container>
         </Card.Body>
-      </Card>
-      <Fab
-        sx={fab.sx}
-        aria-label={fab.label}
-        color={fab.color}
-        onClick={SaveClick}
-      >
-        {fab.icon}
-      </Fab>
-    </center>
+      )}
+    </Card>
+    // <Fab
+    //   sx={fab.sx}
+    //   aria-label={fab.label}
+    //   color={fab.color}
+    //   onClick={SaveClick}
+    // >
+    //   {fab.icon}
+    // </Fab>
   );
 }
