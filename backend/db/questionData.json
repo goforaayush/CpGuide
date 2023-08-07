@@ -1,0 +1,41 @@
+[
+    {
+        "model": "db.QuestionData",
+        "pk": 1,
+        "fields": {
+            "topic_id": "1",
+            "heading_id" : "1",
+            "sub_heading_id" : "1",
+            "heading" : "Step 1: Learn the basics",
+            "sub_heading" :"Step 1.1: Things to Know in C++/Java/Python or any language",
+            "topic": "User Input / Output",
+            "link": "https://practice.geeksforgeeks.org/problems/search-query-auto-complete/0?category%5B%5D=Strings&amp;category%5B%5D=Strings&amp;problemStatus=unsolved&amp;difficulty%5B%5D=2&amp;page=1&amp;query=category%5B%5DStringsproblemStatusunsolveddifficulty%5B%5D2page1category%5B%5DSt"
+        }
+    },
+    {
+        "model": "db.QuestionData",
+        "pk": 2,
+        "fields": {
+            "topic_id": "2",
+            "heading_id" : "1",
+            "sub_heading_id" : "1",
+            "heading" : "Step 1: Learn the basics",
+            "sub_heading" :"Step 1.1: Things to Know in C++/Java/Python or any language",
+            "topic": "Data Types",
+            "link": "https://bit.ly/3Dqmgvx"
+        }
+    },
+    {
+        "model": "db.QuestionData",
+        "pk": 3,
+        "fields": {
+            "topic_id": "3",
+            "heading_id" : "1",
+            "sub_heading_id" : "2",
+            "heading" : "Step 1: Learn the basics dupicate",
+            "sub_heading" :"Step 1.1: Things to Know in C++/Java/Python or any language duplicate",
+            "topic": "User Input / Output",
+            "link": "https://practice.geeksforgeeks.org/problems/search-query-auto-complete/0?category%5B%5D=Strings&amp;category%5B%5D=Strings&amp;problemStatus=unsolved&amp;difficulty%5B%5D=2&amp;page=1&amp;query=category%5B%5DStringsproblemStatusunsolveddifficulty%5B%5D2page1category%5B%5DSt"
+        }
+    }
+]

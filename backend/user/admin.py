@@ -1,3 +1,3 @@
 from django.contrib import admin
-from .models import JsonHandler
-admin.site.register(JsonHandler)
+from db.models import QuestionData
+admin.site.register(QuestionData)
