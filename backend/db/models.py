@@ -10,7 +10,11 @@ class QuestionData(models.Model):
     topic = models.CharField(max_length=255)
     link = models.TextField()
    
-class UserProfile(models.Model):
+class UserVisits(models.Model):
     user = models.CharField(max_length=255)
     topicId = models.CharField(max_length=3)
 
+class UserNotes(models.Model):
+    user = models.CharField(max_length=255)
+    topicId = models.CharField(max_length=255)
+    note = models.TextField()

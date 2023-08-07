@@ -7,7 +7,7 @@ from rest_framework.decorators import api_view
 from .serializers import UserSerializer
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.backends import TokenBackend
-from db.models import UserProfile, QuestionData
+from db.models import UserVisits, QuestionData
 import json
 import os
 from django.conf import settings
