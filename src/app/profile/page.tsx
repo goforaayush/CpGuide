@@ -21,6 +21,7 @@ import { useRouter } from "next/navigation";
 import { ElevatorSharp } from "@mui/icons-material";
 import { fetchQuestionData } from "@/api/fetchQuestionData";
 import { createQuestions } from "@/utilities/createQuestionObject";
+import axios from "axios";
 
 interface UserData {
   username: string;
@@ -136,14 +137,15 @@ export default function ProfilePage() {
           Authorization: "Bearer " + cookies["token"],
         },
       };
+      
       console.log(cookies["token"]);
-
+      
       try {
-        const response = await fetch(endpoint, options);
-        const data = await response.json();
-        let obj: UserData = await JSON.parse(data);
-
-        if (response.ok) {
+        const response = await axios.get(endpoint, options);
+        const data = JSON.parse(response.data);
+        let obj: UserData = data;
+      
+        if (response.status === 200) {
           setUserData(obj);
         }
       } catch (error) {
@@ -172,27 +174,28 @@ export default function ProfilePage() {
   const SaveClick = async () => {
     const axios = require("axios");
     let data = JSON.stringify({
-      topic_id: "2",
+      topic_id: "3",    // change this later 
+      user: userData?.username,
     });
 
     let config = {
-      method: "post",
+      method: "POST",
       maxBodyLength: Infinity,
       url: "http://localhost:8000/db/saveUserVisit",
       headers: {
         "Content-Type": "application/json",
         Authorization:
-        "Bearer " + cookies["token"]
+        "Bearer " + cookies["token"],
       },
       data: data,
     };
 
     axios
       .request(config)
-      .then((response) => {
+      .then((response: { data: any; }) => {
         console.log(JSON.stringify(response.data));
       })
-      .catch((error) => {
+      .catch((error: any) => {
         console.log(error);
       });
 

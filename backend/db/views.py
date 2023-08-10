@@ -26,8 +26,8 @@ def getQuestionData(request):
 
 
 @api_view(["POST"])
-@authentication_classes([SessionAuthentication, TokenAuthentication])
-# @permission_classes([IsAuthenticated])
+# @authentication_classes([SessionAuthentication, TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def saveUserVisit(request):
     try:
         print(request)
@@ -61,7 +61,7 @@ def saveUserVisit(request):
 
 
 @api_view(["DELETE"])
-@authentication_classes([SessionAuthentication, TokenAuthentication])
+# @authentication_classes([SessionAuthentication, TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def deleteUserVisit(request):
     try:
@@ -89,7 +89,7 @@ def deleteUserVisit(request):
 
 
 @api_view(["POST"])
-@authentication_classes([SessionAuthentication, TokenAuthentication])
+# @authentication_classes([SessionAuthentication, TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def create_user_note(request):
     try:
@@ -122,7 +122,7 @@ def create_user_note(request):
 
 
 @api_view(["PUT"])
-@authentication_classes([SessionAuthentication, TokenAuthentication])
+# @authentication_classes([SessionAuthentication, TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def update_user_note(request):
     try:
@@ -149,7 +149,7 @@ def update_user_note(request):
 
 
 @api_view(["DELETE"])
-@authentication_classes([SessionAuthentication, TokenAuthentication])
+# @authentication_classes([SessionAuthentication, TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def delete_user_note(request):
     try:
@@ -174,7 +174,7 @@ def delete_user_note(request):
 
 
 @api_view(["GET"])
-@authentication_classes([SessionAuthentication, TokenAuthentication])
+# @authentication_classes([SessionAuthentication, TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def get_user_notes(request):
     try:
