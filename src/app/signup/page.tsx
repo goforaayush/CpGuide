@@ -37,8 +37,6 @@ export default async function SignUp() {
     };
     axios.request(config)
     .then((response:any) => {
-      // let obj = JSON.parse(response.data)
-      // console.log(obj);
       if (response.status == 400) {
         toast("try again");
       } else if (response.status == 300) {
@@ -53,25 +51,6 @@ export default async function SignUp() {
         console.error( error);
         toast.error("Unexpected error occured");
     });
-    // const options = {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSONdata,
-    // };
-
-    // const response = await fetch(endpoint, options);
-    // const res = await response.json();
-    // if (response.status == 400) {
-    //   toast("try again");
-    // } else if (response.status == 300) {
-    //   toast("you have already been registered, Login with your credentials");
-    //   setTimeout(() => router.push("/login"), 1000);
-    // } else {
-    //   toast("you have been registered, Login with your credentials now");
-    //   setTimeout(() => router.push("/login"), 1000);
-    // }
   };
 
   return (

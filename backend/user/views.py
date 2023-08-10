@@ -49,7 +49,7 @@ class profile(APIView):
             valid_data = TokenBackend(algorithm='HS256').decode(token,verify=False)
 
             user = User.objects.get(username=request.user)
-           
+            print(user)
             profile_data = {
             "username": user.username,
             "email": user.email,

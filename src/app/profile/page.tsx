@@ -37,6 +37,7 @@ interface UrlData {
 }
 
 interface StepData {
+  urls: any;
   heading: string;
   subheadings: SubHeadings;
   links: any;
@@ -56,6 +57,7 @@ interface SubHeadings {
 }
 
 interface Questions {
+  topic: ReactNode;
   length: number;
   map(
     arg0: (urlObj: any, innerIndex: number) => import("react").JSX.Element
@@ -101,7 +103,7 @@ export default function ProfilePage() {
   const [innerOpen, setInnerOpen] = useState<boolean>(false);
   const [stepData, setStepData] = useState<StepData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [status, setStatus] = useState("unvisited");
+  const [status, setStatus] = useState(Array(3).fill("unvisited"));
   const [check, setCheck] = useState(true);
   const [parsed, setParsed] = useState<any | null>(null);
 
@@ -125,23 +127,6 @@ export default function ProfilePage() {
   };
   const router = useRouter();
 
-  const SaveClick = async () => {
-    const endpoint = "http://localhost:8000/api/auth/profile";
-    const options = {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + cookies["token"],
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ topic_id: "11B" }), //this needs to be modified later
-    };
-    const response = await fetch(endpoint, options);
-    if (response.ok) {
-      toast("Your progress has been saved");
-      router.push("/profile");
-    }
-  };
-
   useEffect(() => {
     const fetchProfileData = async () => {
       const endpoint = "http://localhost:8000/api/auth/profile";
@@ -151,6 +136,7 @@ export default function ProfilePage() {
           Authorization: "Bearer " + cookies["token"],
         },
       };
+      console.log(cookies["token"]);
 
       try {
         const response = await fetch(endpoint, options);
@@ -183,15 +169,60 @@ export default function ProfilePage() {
     setLoading(false);
   }, []);
 
+  const SaveClick = async () => {
+    const axios = require("axios");
+    let data = JSON.stringify({
+      topic_id: "2",
+    });
+
+    let config = {
+      method: "post",
+      maxBodyLength: Infinity,
+      url: "http://localhost:8000/db/saveUserVisit",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization:
+        "Bearer " + cookies["token"]
+      },
+      data: data,
+    };
+
+    axios
+      .request(config)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    // const endpoint = "http://localhost:8000/api/auth/profile";
+    // const options = {
+    //   method: "POST",
+    //   headers: {
+    //     Authorization: "Bearer " + cookies["token"],
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({ topic_id: "11B" }), //this needs to be modified later
+    // };
+    // const response = await fetch(endpoint, options);
+    // if (response.ok) {
+    //   toast("Your progress has been saved");
+    //   router.push("/profile");
+    // }
+  };
+
   const status_click = (
     token: string,
     index: number,
     subIndex: number,
-    innerIndex: number,
-    innerKey: string,
-    topic: string
+    // innerIndex: number,
+    // innerKey: string,
+    topic_id: number
   ) => {
     const copyData = [...stepData];
+    // console.log('stepData:',copyData[0].subheadings[subIndex].questions[0]);
+
     const userDataCopy = userData ?? {
       username: "",
       email: "",
@@ -199,33 +230,47 @@ export default function ProfilePage() {
       lname: "",
       links: "",
     };
+    const copyStatus = status;
+    copyStatus[topic_id - 1] = token;
+    setStatus(copyStatus);
+    setStepData(copyData);
+    // if (token === "visited") {
+    //   copyData[index].subheadings[subIndex] = token;
 
-    if (token === "visited") {
-      copyData[index].urls[subIndex][innerIndex][innerKey].status = token;
+    //   const copyParse = parsed;
 
-      const copyParse = parsed;
+    //   copyParse[topic] = token;
 
-      copyParse[topic] = token;
+    //   setParsed(copyParse);
 
-      setParsed(copyParse);
+    //   const copyStatus = status;
+    //   copyStatus[topic_id-1] = token
+    //   setStatus(copyStatus)
+    //   userDataCopy.links = JSON.stringify(parsed);
+    //   setUserData(userDataCopy);
 
-      userDataCopy.links = JSON.stringify(parsed);
-      setUserData(userDataCopy);
+    //   setStepData(copyData);
+    // } else if (token === "unvisited") {
+    //   copyData[index].urls[subIndex][innerIndex][innerKey].status = token;
 
-      setStepData(copyData);
-    } else if (token === "unvisited") {
-      copyData[index].urls[subIndex][innerIndex][innerKey].status = token;
+    //   const copyParse = parsed;
+    //   copyParse[topic] = token;
 
-      const copyParse = parsed;
-      copyParse[topic] = token;
+    //   setParsed(copyParse);
 
-      setParsed(copyParse);
+    //   userDataCopy.links = JSON.stringify(parsed);
+    //   setUserData(userDataCopy);
+    //   console.log('hi');
 
-      userDataCopy.links = JSON.stringify(parsed);
-      setUserData(userDataCopy);
+    //   const copyStatus = status;
+    //   copyStatus[topic_id-1] = token
+    //   console.log(copyStatus);
 
-      setStepData(copyData);
-    }
+    //   setStatus(copyStatus)
+    //   console.log(status);
+
+    //   setStepData(copyData);
+    // }
   };
 
   return (
@@ -265,10 +310,11 @@ export default function ProfilePage() {
 
             <Card style={styles.card}>
               <Card.Title className="fw-bold h5 mb-4">
-                <Alert key="primary" variant="primary">
-                  Save your progress before leaving by clicking the button in
-                  bottom right
-                </Alert>
+                <center>
+                  <Alert key="primary" variant="primary">
+                    Your Journey to a CP Gawd!!
+                  </Alert>
+                </center>
               </Card.Title>
               {stepData.length > 0 &&
                 stepData.map((step: StepData, index: number) => {
@@ -383,14 +429,34 @@ export default function ProfilePage() {
                                                             "none",
                                                         }}
                                                         variant="outline-light"
-                                                        title={status}
+                                                        title={
+                                                          status[
+                                                            question.topic_id -
+                                                              1
+                                                          ]
+                                                        }
                                                       >
                                                         <Dropdown.Item
                                                           style={{
                                                             color: "#61dafb",
                                                           }}
-                                                          onClick={() =>
-                                                            setStatus("visited")
+                                                          onClick={
+                                                            () => {
+                                                              status_click(
+                                                                "Visited",
+                                                                index,
+                                                                subIndex,
+                                                                question.topic_id
+                                                                // innerIndex,
+                                                                // innerKey,
+                                                                // topic
+                                                              );
+                                                              SaveClick();
+                                                              console.log(
+                                                                question.topic_id
+                                                              );
+                                                            }
+                                                            // setStatus("visited")
                                                           }
                                                         >
                                                           Visited
@@ -399,11 +465,21 @@ export default function ProfilePage() {
                                                           style={{
                                                             color: "#61dafb",
                                                           }}
-                                                          onClick={() =>
-                                                            setStatus(
-                                                              "unvisited"
-                                                            )
-                                                          }
+                                                          onClick={() => {
+                                                            status_click(
+                                                              "Unvisited",
+                                                              index,
+                                                              subIndex,
+                                                              question.topic_id
+                                                              // innerIndex,
+                                                              // innerKey,
+                                                              // topic
+                                                            );
+                                                            // SaveClick();
+                                                            console.log(
+                                                              question.topic_id
+                                                            );
+                                                          }}
                                                         >
                                                           Unvisited
                                                         </Dropdown.Item>
