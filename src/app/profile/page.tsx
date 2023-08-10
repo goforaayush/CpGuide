@@ -51,6 +51,7 @@ interface SubHeadings {
 }
 
 interface Questions {
+  topic: string;
   length: number;
   map(arg0: (urlObj: any, innerIndex: number) => import("react").JSX.Element): import("react").ReactNode;
   topic_id: number;
@@ -193,32 +194,32 @@ export default function ProfilePage() {
       links: "",
     };
 
-    if (token === "visited") {
-      copyData[index].urls[subIndex][innerIndex][innerKey].status = token;
+    // if (token === "visited") {
+    //   copyData[index].urls[subIndex][innerIndex][innerKey].status = token;
 
-      const copyParse = parsed;
+    //   const copyParse = parsed;
 
-      copyParse[topic] = token;
+    //   copyParse[topic] = token;
 
-      setParsed(copyParse);
+    //   setParsed(copyParse);
 
-      userDataCopy.links = JSON.stringify(parsed);
-      setUserData(userDataCopy);
+    //   userDataCopy.links = JSON.stringify(parsed);
+    //   setUserData(userDataCopy);
 
-      setStepData(copyData);
-    } else if (token === "unvisited") {
-      copyData[index].urls[subIndex][innerIndex][innerKey].status = token;
+    //   setStepData(copyData);
+    // } else if (token === "unvisited") {
+    //   copyData[index].urls[subIndex][innerIndex][innerKey].status = token;
 
-      const copyParse = parsed;
-      copyParse[topic] = token;
+    //   const copyParse = parsed;
+    //   copyParse[topic] = token;
 
-      setParsed(copyParse);
+    //   setParsed(copyParse);
 
-      userDataCopy.links = JSON.stringify(parsed);
-      setUserData(userDataCopy);
+    //   userDataCopy.links = JSON.stringify(parsed);
+    //   setUserData(userDataCopy);
 
-      setStepData(copyData);
-    }
+    //   setStepData(copyData);
+    // }
   };
 
   return (
