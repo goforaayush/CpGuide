@@ -37,13 +37,19 @@ interface UrlData {
 }
 
 interface StepData {
+  urls: any;
   heading: string;
   subheadings: SubHeadings;
   links: any;
 }
 
 interface SubHeadings {
-  map(arg0: (subheading: SubHeadings, subIndex: number) => import("react").JSX.Element): import("react").ReactNode;
+  map(
+    arg0: (
+      subheading: SubHeadings,
+      subIndex: number
+    ) => import("react").JSX.Element
+  ): import("react").ReactNode;
   length: number;
   sub_heading: string;
   sub_heading_id: number;
@@ -53,7 +59,9 @@ interface SubHeadings {
 interface Questions {
   topic: string;
   length: number;
-  map(arg0: (urlObj: any, innerIndex: number) => import("react").JSX.Element): import("react").ReactNode;
+  map(
+    arg0: (urlObj: any, innerIndex: number) => import("react").JSX.Element
+  ): import("react").ReactNode;
   topic_id: number;
   link: string;
 }
@@ -95,7 +103,7 @@ export default function ProfilePage() {
   const [innerOpen, setInnerOpen] = useState<boolean>(false);
   const [stepData, setStepData] = useState<StepData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [status, setStatus] = useState("unvisited");
+  const [status, setStatus] = useState(Array(3).fill("unvisited"));
   const [check, setCheck] = useState(true);
   const [parsed, setParsed] = useState<any | null>(null);
 
@@ -119,23 +127,6 @@ export default function ProfilePage() {
   };
   const router = useRouter();
 
-  const SaveClick = async () => {
-    const endpoint ="http://localhost:8000/api/auth/profile";
-    const options = {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + cookies["token"],
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({topic_id : "11B"}),   //this needs to be modified later
-    };
-    const response = await fetch(endpoint, options);
-    if (response.ok) {
-      toast("Your progress has been saved");
-      router.push("/profile");
-    }
-  };
-
   useEffect(() => {
     const fetchProfileData = async () => {
       const endpoint = "http://localhost:8000/api/auth/profile";
@@ -145,6 +136,7 @@ export default function ProfilePage() {
           Authorization: "Bearer " + cookies["token"],
         },
       };
+      console.log(cookies["token"]);
 
       try {
         const response = await fetch(endpoint, options);
@@ -168,24 +160,69 @@ export default function ProfilePage() {
 
   useEffect(() => {
     const fetchQuestions = async () => {
-      const questions = await createQuestions()
-      console.log(questions)
-      setStepData(questions)
+      const questions = await createQuestions();
+      console.log(questions);
+      setStepData(questions);
     };
 
-    fetchQuestions()
+    fetchQuestions();
     setLoading(false);
   }, []);
+
+  const SaveClick = async () => {
+    const axios = require("axios");
+    let data = JSON.stringify({
+      topic_id: "2",
+    });
+
+    let config = {
+      method: "post",
+      maxBodyLength: Infinity,
+      url: "http://localhost:8000/db/saveUserVisit",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization:
+        "Bearer " + cookies["token"]
+      },
+      data: data,
+    };
+
+    axios
+      .request(config)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    // const endpoint = "http://localhost:8000/api/auth/profile";
+    // const options = {
+    //   method: "POST",
+    //   headers: {
+    //     Authorization: "Bearer " + cookies["token"],
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({ topic_id: "11B" }), //this needs to be modified later
+    // };
+    // const response = await fetch(endpoint, options);
+    // if (response.ok) {
+    //   toast("Your progress has been saved");
+    //   router.push("/profile");
+    // }
+  };
 
   const status_click = (
     token: string,
     index: number,
     subIndex: number,
-    innerIndex: number,
-    innerKey: string,
-    topic: string
+    // innerIndex: number,
+    // innerKey: string,
+    topic_id: number
   ) => {
     const copyData = [...stepData];
+    // console.log('stepData:',copyData[0].subheadings[subIndex].questions[0]);
+
     const userDataCopy = userData ?? {
       username: "",
       email: "",
@@ -193,9 +230,12 @@ export default function ProfilePage() {
       lname: "",
       links: "",
     };
-
+    const copyStatus = status;
+    copyStatus[topic_id - 1] = token;
+    setStatus(copyStatus);
+    setStepData(copyData);
     // if (token === "visited") {
-    //   copyData[index].urls[subIndex][innerIndex][innerKey].status = token;
+    //   copyData[index].subheadings[subIndex] = token;
 
     //   const copyParse = parsed;
 
@@ -203,6 +243,9 @@ export default function ProfilePage() {
 
     //   setParsed(copyParse);
 
+    //   const copyStatus = status;
+    //   copyStatus[topic_id-1] = token
+    //   setStatus(copyStatus)
     //   userDataCopy.links = JSON.stringify(parsed);
     //   setUserData(userDataCopy);
 
@@ -217,6 +260,14 @@ export default function ProfilePage() {
 
     //   userDataCopy.links = JSON.stringify(parsed);
     //   setUserData(userDataCopy);
+    //   console.log('hi');
+
+    //   const copyStatus = status;
+    //   copyStatus[topic_id-1] = token
+    //   console.log(copyStatus);
+
+    //   setStatus(copyStatus)
+    //   console.log(status);
 
     //   setStepData(copyData);
     // }
@@ -238,29 +289,32 @@ export default function ProfilePage() {
           <Container>
             {userData && (
               <Card style={styles.card}>
-                <Card.Title className="fw-bold h5 mb-4">
-                  Profile Information
-                </Card.Title>
-                <ul className="list-unstyled">
-                  <li>
-                    <strong className="">First Name:</strong> {userData.fname}
-                  </li>
-                  <li>
-                    <strong className="">Last Name:</strong> {userData.lname}
-                  </li>
-                  <li>
-                    <strong className="">Email:</strong> {userData.email}
-                  </li>
-                </ul>
+                <center>
+                  <Card.Title className="fw-bold h5 mb-4">
+                    Profile Information
+                  </Card.Title>
+                  <ul className="list-unstyled">
+                    <li>
+                      <strong className="">First Name:</strong> {userData.fname}
+                    </li>
+                    <li>
+                      <strong className="">Last Name:</strong> {userData.lname}
+                    </li>
+                    <li>
+                      <strong className="">Email:</strong> {userData.email}
+                    </li>
+                  </ul>
+                </center>
               </Card>
             )}
 
             <Card style={styles.card}>
               <Card.Title className="fw-bold h5 mb-4">
-                <Alert key="primary" variant="primary">
-                  Save your progress before leaving by clicking the button in
-                  bottom right
-                </Alert>
+                <center>
+                  <Alert key="primary" variant="primary">
+                    Your Journey to a CP Gawd!!
+                  </Alert>
+                </center>
               </Card.Title>
               {stepData.length > 0 &&
                 stepData.map((step: StepData, index: number) => {
@@ -296,11 +350,11 @@ export default function ProfilePage() {
                                                   style={styles.card}
                                                 >
                                                   <center>
-                                                  <Card.Title className="fw-bold h5 mb-4">
-                                                    {question.topic}
-                                                  </Card.Title>
+                                                    <Card.Title className="fw-bold h5 mb-4">
+                                                      {question.topic}
+                                                    </Card.Title>
                                                   </center>
-                                                
+
                                                   <ul className="list-unstyled">
                                                     <li>
                                                       {/* <Button
@@ -326,7 +380,8 @@ export default function ProfilePage() {
                                                           </a>
                                                         )}
                                                       </Button> */}
-                                                      {question.link === "NO-URL" ? (
+                                                      {question.link ===
+                                                      "NO-URL" ? (
                                                         <center>
                                                           <div>
                                                             NO-URL available
@@ -347,52 +402,84 @@ export default function ProfilePage() {
                                                             variant="outline-light"
                                                           >
                                                             <a
-                                                              href={question.link}
+                                                              href={
+                                                                question.link
+                                                              }
                                                               target="_blank"
                                                               style={{
                                                                 color:
                                                                   "#61dafb",
-                                                              }}>
+                                                              }}
+                                                            >
                                                               Solve
                                                             </a>
-                                                          </Button> 
-                                                          </>
-                                                          )}
+                                                          </Button>
+                                                        </>
+                                                      )}
 
                                                       <br />
                                                       <DropdownButton
-                                                            style={{
-                                                              color: "#61dafb",
-                                                              position:
-                                                                "absolute",
-                                                              right: "10px",
-                                                              bottom: "10px",
+                                                        style={{
+                                                          color: "#61dafb",
+                                                          position: "absolute",
+                                                          right: "10px",
+                                                          bottom: "10px",
 
-                                                              textDecoration:
-                                                                "none",
-                                                            }}
-                                                            variant="outline-light"
-                                                            title={status}
-                                                          >
-                                                        <Dropdown.Item
-                                                         style={{
-                                                          color:
-                                                            "#61dafb",
+                                                          textDecoration:
+                                                            "none",
                                                         }}
-                                                          onClick={() =>
-                                                            setStatus("visited")
+                                                        variant="outline-light"
+                                                        title={
+                                                          status[
+                                                            question.topic_id -
+                                                              1
+                                                          ]
+                                                        }
+                                                      >
+                                                        <Dropdown.Item
+                                                          style={{
+                                                            color: "#61dafb",
+                                                          }}
+                                                          onClick={
+                                                            () => {
+                                                              status_click(
+                                                                "Visited",
+                                                                index,
+                                                                subIndex,
+                                                                question.topic_id
+                                                                // innerIndex,
+                                                                // innerKey,
+                                                                // topic
+                                                              );
+                                                              SaveClick();
+                                                              console.log(
+                                                                question.topic_id
+                                                              );
+                                                            }
+                                                            // setStatus("visited")
                                                           }
                                                         >
                                                           Visited
                                                         </Dropdown.Item>
                                                         <Dropdown.Item
-                                                         style={{
-                                                          color:
-                                                            "#61dafb",
-                                                        }}
-                                                          onClick={() =>
-                                                            setStatus("unvisited")
-                                                          }
+                                                          style={{
+                                                            color: "#61dafb",
+                                                          }}
+                                                          onClick={() => {
+                                                            status_click(
+                                                              "Unvisited",
+                                                              index,
+                                                              subIndex,
+                                                              question.topic_id
+                                                              // innerIndex,
+                                                              // innerKey,
+                                                              // topic
+                                                            );
+                                                            // SaveClick();
+                                                            console.log(
+                                                              question.topic_id
+                                                            );
+                                                          }}
                                                         >
                                                           Unvisited
                                                         </Dropdown.Item>

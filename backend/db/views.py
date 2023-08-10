@@ -27,9 +27,11 @@ def getQuestionData(request):
 
 @api_view(["POST"])
 @authentication_classes([SessionAuthentication, TokenAuthentication])
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 def saveUserVisit(request):
     try:
+        print(request)
+        print(request.data)
         user = request.data.get("user")
         topic_id = request.data.get("topic_id")
         if not (user and topic_id):

@@ -1,5 +1,4 @@
 "use client"
-// import { Form, } from 'react-bootstrap'
 import { AccountCircleOutlined, LockOutlined } from '@mui/icons-material';
 import { useRouter } from 'next/navigation'
 import { useCookies } from 'react-cookie'
@@ -45,33 +44,6 @@ export default async function Login() {
         } else {
           toast.error("noo")
         }})
-        // const options = {
-        //   method: 'POST',
-        //   headers: {
-        //     'Content-Type': 'application/json',
-  
-        //   },
-        //   body: JSONdata
-        // }
-        // const response = await fetch(endpoint, options)
-      // const res = await response.json()
-      // if (response.status == 200) {
-      
-      //   setCookie('token',res['access'],{path:'/',secure:true,maxAge:3600})
-      //   router.replace('/login')
-      //   toast.success("cheers")
-      //   router.push("/profile")
-      
-      // } else {
-      //   toast.error("noo")
-      // }
-      
-      
-        
-    
-    // .catch((error:any) => {
-    //   console.log(error);
-    // });
 
     }
 
