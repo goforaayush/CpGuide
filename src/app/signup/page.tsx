@@ -10,34 +10,23 @@ import {
   PersonOutline,
 } from "@mui/icons-material";
 import { SIGNUP_URL } from "@/utilities/url-builder";
+import { postSignup } from "@/api/postSignup";
 
 // import register_usr from './register_usr';?
 export default async function SignUp() {
   const router = useRouter();
 
   const register_usr = async (event: any) => {
-    event.preventDefault();
-    const axios = require('axios');
-    const data = {
-      fname: event.target.fname.value,
-      lname: event.target.lname.value,
-      email: event.target.email.value,
-      username: event.target.username.value,
-      password: event.target.password.value,
-    };
-
-    const JSONdata = JSON.stringify(data);
-    const endpoint = SIGNUP_URL(process.env.NEXT_PUBLIC_BASE_URL);
-    let config = {
-      method: 'post',
-      url: endpoint,
-      headers: { 
-        "Content-Type": "application/json",
-      },
-      data: JSONdata
-    };
-    axios.request(config)
-    .then((response:any) => {
+    try {
+      event.preventDefault();
+      const data = {
+        fname: event.target.fname.value,
+        lname: event.target.lname.value,
+        email: event.target.email.value,
+        username: event.target.username.value,
+        password: event.target.password.value,
+      };
+      let response = await postSignup (data)
       if (response.status == 400) {
         toast("try again");
       } else if (response.status == 300) {
@@ -46,12 +35,10 @@ export default async function SignUp() {
       } else {
         toast("You have been Successfully Registered. Login with your Credentials now");
       }  
-        
-    })
-    .catch((error:any) => {
-        console.error( error);
-        toast.error("Unexpected error occured");
-    });
+    } catch (error) {
+      console.error( error);
+      toast.error("Unexpected error occured");
+    }  
   };
 
   return (
