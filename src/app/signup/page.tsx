@@ -9,6 +9,7 @@ import {
   LockOutlined,
   PersonOutline,
 } from "@mui/icons-material";
+import { SIGNUP_URL } from "@/utilities/url-builder";
 
 // import register_usr from './register_usr';?
 export default async function SignUp() {
@@ -26,7 +27,7 @@ export default async function SignUp() {
     };
 
     const JSONdata = JSON.stringify(data);
-    const endpoint = process.env.NEXT_PUBLIC_SIGNUP_URL;
+    const endpoint = SIGNUP_URL(process.env.NEXT_PUBLIC_BASE_URL);
     let config = {
       method: 'post',
       url: endpoint,

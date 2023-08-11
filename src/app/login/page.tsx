@@ -5,50 +5,26 @@ import { useCookies } from 'react-cookie'
 
 import { toast } from 'react-hot-toast'
 import React from 'react';
-    import { Button, TextField, FormControl, Typography, Box } from '@mui/material';
+import { Button, TextField, FormControl, Typography, Box } from '@mui/material';
+import { postLogin } from '@/api/postLogin';
 
 export default async function Login() {
   const router = useRouter()
   const [cookies, setCookie, removeCookie] = useCookies(['token']);
   const login_handler = async (event: any) => {
-      event.preventDefault()
-
-      const axios = require('axios');
-      const data = {
-        username: event.target.username.value,
-        password: event.target.password.value,
-      }
-
-      const JSONdata = JSON.stringify(data)
-      const endpoint = process.env.NEXT_PUBLIC_LOGIN_URL
-      
-      let config = {
-        method: 'post',
-        url: endpoint,
-        headers: { 
-          'Content-Type': 'application/json',
-        },
-        data : JSONdata
-      };
-      axios.request(config)
-      .then((response:any) => {
-        if (response.status == 200) {
-          const res : any = (response.data)
-          console.log('token',res);
-          
-          setCookie('token',res['access'],{path:'/',secure:true,maxAge:3600})
-          router.replace('/login')
-          toast.success("Cheers!")
-          router.push("/profile")
-          
-        } else {
-          toast.error("noo")
-        }})
-
+    event.preventDefault()
+    const response = await postLogin(event.target.username.value, event.target.password.value)
+    if (response.status == 200) {
+      const res: any = JSON.stringify(response.data)
+      console.log('token', res);
+      setCookie('token', res['access'], { path: '/', secure: true, maxAge: 3600 })
+      router.replace('/login')
+      toast.success("Cheers!")
+      router.push("/profile")
+    } else {
+      toast.error("noo")
     }
-
-
-    
+  }    
     return (
       <Box
         sx={{
