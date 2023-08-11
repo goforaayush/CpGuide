@@ -1,26 +1,31 @@
 "use client"
-import { AccountCircleOutlined, LockOutlined } from '@mui/icons-material';
+import { AccountCircleOutlined, CookieSharp, LockOutlined } from '@mui/icons-material';
 import { useRouter } from 'next/navigation'
 import { useCookies } from 'react-cookie'
 
 import { toast } from 'react-hot-toast'
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, TextField, FormControl, Typography, Box } from '@mui/material';
 import { postLogin } from '@/api/postLogin';
 
 export default async function Login() {
   const router = useRouter()
   const [cookies, setCookie, removeCookie] = useCookies(['token']);
+
+  useEffect(() => {
+    if (cookies.token) {
+      router.replace('/login')
+      toast.success("Cheers!")
+      router.push("/profile")
+    }
+  }, [cookies.token, router]);
+
+  
   const login_handler = async (event: any) => {
     event.preventDefault()
     const response = await postLogin(event.target.username.value, event.target.password.value)
     if (response.status == 200) {
-      const res: any = JSON.stringify(response.data)
-      console.log('token', res);
-      setCookie('token', res['access'], { path: '/', secure: true, maxAge: 3600 })
-      router.replace('/login')
-      toast.success("Cheers!")
-      router.push("/profile")
+      setCookie('token', response.data.access, { path: '/', secure: true, maxAge: 3600 })
     } else {
       toast.error("noo")
     }
