@@ -5,4 +5,8 @@ export const LOGIN_URL = (BASE_URL:any) =>
 export const SIGNUP_URL = (BASE_URL:any) => 
     `${BASE_URL}/api/auth/signup`
 
+    
+export const PROFILE_URL = (BASE_URL:any) => 
+    `${BASE_URL}/api/auth/profile`
+
 

@@ -22,6 +22,7 @@ import { ElevatorSharp } from "@mui/icons-material";
 import { fetchQuestionData } from "@/api/fetchQuestionData";
 import { createQuestions } from "@/utilities/createQuestionObject";
 import axios from "axios";
+import { fetchProfileData } from "@/api/fetchProfileData";
 
 interface UserData {
   username: string;
@@ -129,22 +130,11 @@ export default function ProfilePage() {
   const router = useRouter();
 
   useEffect(() => {
-    const fetchProfileData = async () => {
-      const endpoint = "http://localhost:8000/api/auth/profile";
-      const options = {
-        method: "GET",
-        headers: {
-          Authorization: "Bearer " + cookies["token"],
-        },
-      };
-      
-      console.log(cookies["token"]);
-      
+    const setProfileData = async () => {  
       try {
-        const response = await axios.get(endpoint, options);
+        const response = await fetchProfileData(cookies["token"])
         const data = JSON.parse(response.data);
         let obj: UserData = data;
-      
         if (response.status === 200) {
           setUserData(obj);
         }
@@ -157,16 +147,14 @@ export default function ProfilePage() {
       }
     };
 
-    fetchProfileData();
+    setProfileData();
   }, []);
 
   useEffect(() => {
     const fetchQuestions = async () => {
       const questions = await createQuestions();
-      console.log(questions);
       setStepData(questions);
     };
-
     fetchQuestions();
     setLoading(false);
   }, []);
