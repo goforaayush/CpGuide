@@ -23,6 +23,7 @@ import { fetchQuestionData } from "@/api/fetchQuestionData";
 import { createQuestions } from "@/utilities/createQuestionObject";
 import axios from "axios";
 import { fetchProfileData } from "@/api/fetchProfileData";
+import { saveUserVisit } from "@/api/saveUserVisit";
 
 interface UserData {
   username: string;
@@ -159,109 +160,28 @@ export default function ProfilePage() {
     setLoading(false);
   }, []);
 
-  const SaveClick = async () => {
-    const axios = require("axios");
-    let data = JSON.stringify({
-      topic_id: "3",    // change this later 
+  const SaveClick = async (topic_id :number) => {
+
+    const data = {
+      topic_id: topic_id,    // change this later 
       user: userData?.username,
-    });
-
-    let config = {
-      method: "POST",
-      maxBodyLength: Infinity,
-      url: "http://localhost:8000/db/saveUserVisit",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization:
-        "Bearer " + cookies["token"],
-      },
-      data: data,
-    };
-
-    axios
-      .request(config)
-      .then((response: { data: any; }) => {
-        console.log(JSON.stringify(response.data));
-      })
-      .catch((error: any) => {
-        console.log(error);
-      });
-
-    // const endpoint = "http://localhost:8000/api/auth/profile";
-    // const options = {
-    //   method: "POST",
-    //   headers: {
-    //     Authorization: "Bearer " + cookies["token"],
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({ topic_id: "11B" }), //this needs to be modified later
-    // };
-    // const response = await fetch(endpoint, options);
-    // if (response.ok) {
-    //   toast("Your progress has been saved");
-    //   router.push("/profile");
-    // }
+    }
+    try {
+      const response = await saveUserVisit(cookies["token"] , data)
+    } catch (error) {
+      console.log(error);
+    }
   };
 
+  //modify this later
   const status_click = (
     token: string,
-    index: number,
-    subIndex: number,
-    // innerIndex: number,
-    // innerKey: string,
     topic_id: number
   ) => {
-    const copyData = [...stepData];
-    // console.log('stepData:',copyData[0].subheadings[subIndex].questions[0]);
-
-    const userDataCopy = userData ?? {
-      username: "",
-      email: "",
-      fname: "",
-      lname: "",
-      links: "",
-    };
     const copyStatus = status;
     copyStatus[topic_id - 1] = token;
     setStatus(copyStatus);
-    setStepData(copyData);
-    // if (token === "visited") {
-    //   copyData[index].subheadings[subIndex] = token;
 
-    //   const copyParse = parsed;
-
-    //   copyParse[topic] = token;
-
-    //   setParsed(copyParse);
-
-    //   const copyStatus = status;
-    //   copyStatus[topic_id-1] = token
-    //   setStatus(copyStatus)
-    //   userDataCopy.links = JSON.stringify(parsed);
-    //   setUserData(userDataCopy);
-
-    //   setStepData(copyData);
-    // } else if (token === "unvisited") {
-    //   copyData[index].urls[subIndex][innerIndex][innerKey].status = token;
-
-    //   const copyParse = parsed;
-    //   copyParse[topic] = token;
-
-    //   setParsed(copyParse);
-
-    //   userDataCopy.links = JSON.stringify(parsed);
-    //   setUserData(userDataCopy);
-    //   console.log('hi');
-
-    //   const copyStatus = status;
-    //   copyStatus[topic_id-1] = token
-    //   console.log(copyStatus);
-
-    //   setStatus(copyStatus)
-    //   console.log(status);
-
-    //   setStepData(copyData);
-    // }
   };
 
   return (
@@ -299,16 +219,15 @@ export default function ProfilePage() {
               </Card>
             )}
 
-            <Card style={styles.card}>
-              <Card.Title className="fw-bold h5 mb-4">
-                <center>
-                  <Alert key="primary" variant="primary">
-                    Your Journey to a CP Gawd!!
-                  </Alert>
-                </center>
-              </Card.Title>
-              {stepData.length > 0 &&
-                stepData.map((step: StepData, index: number) => {
+              <Card style={styles.card}>
+                <Card.Title className="fw-bold h5 mb-4">
+                  <center>
+                    <Alert key="primary" variant="primary">
+                      Your Journey to a CP Gawd!!
+                    </Alert>
+                  </center>
+                </Card.Title>
+                {stepData.length > 0 && stepData.map((step: StepData, index: number) => {
                   const subHeadings = step.subheadings || [];
                   return (
                     <Card style={styles.card} key={index}>
@@ -320,18 +239,13 @@ export default function ProfilePage() {
                               subHeadings.map(
                                 (subheading: SubHeadings, subIndex: number) => {
                                   return (
-                                    <Accordion
-                                      defaultActiveKey={String(subIndex)}
-                                      key={subheading.sub_heading_id}
-                                    >
+                                    <Accordion defaultActiveKey={String(subIndex)} key={subheading.sub_heading_id}>
                                       <Accordion.Header>
                                         {subheading.sub_heading}
                                       </Accordion.Header>
-
                                       <Accordion.Body>
-                                        {subheading.questions.length > 0 &&
-                                          subheading.questions.map(
-                                            (
+                                        {subheading.questions.length > 0 && subheading.questions.map(
+                                          (
                                               question: Questions,
                                               questionIndex: number
                                             ) => {
@@ -345,44 +259,11 @@ export default function ProfilePage() {
                                                       {question.topic}
                                                     </Card.Title>
                                                   </center>
-
                                                   <ul className="list-unstyled">
                                                     <li>
-                                                      {/* <Button
-                                                        style={styles.button}
-                                                        variant="outline-light"
-                                                      >
-                                                        {question.link ===
-                                                        "NO-URL" ? (
-                                                          <a
-                                                            href=""
-                                                            target="_blank"
-                                                            style={styles.link}
-                                                          >
-                                                            NO-URL available
-                                                          </a>
-                                                        ) : (
-                                                          <a
-                                                            href={question.link}
-                                                            target="_blank"
-                                                            style={styles.link}
-                                                          >
-                                                            Solve
-                                                          </a>
-                                                        )}
-                                                      </Button> */}
-                                                      {question.link ===
-                                                      "NO-URL" ? (
-                                                        <center>
-                                                          <div>
-                                                            NO-URL available
-                                                          </div>
-                                                        </center>
-                                                      ) : (
                                                         <>
                                                           <Button
                                                             style={
-                                                              // styles.button,
                                                               {
                                                                 position:
                                                                   "absolute",
@@ -391,6 +272,13 @@ export default function ProfilePage() {
                                                               }
                                                             }
                                                             variant="outline-light"
+                                                            onClick= {() => {
+                                                              SaveClick(question.topic_id);
+                                                              status_click(
+                                                                "Visited",
+                                                                question.topic_id
+                                                              );
+                                                            }}
                                                           >
                                                             <a
                                                               href={
@@ -406,8 +294,6 @@ export default function ProfilePage() {
                                                             </a>
                                                           </Button>
                                                         </>
-                                                      )}
-
                                                       <br />
                                                       <DropdownButton
                                                         style={{
@@ -435,19 +321,14 @@ export default function ProfilePage() {
                                                             () => {
                                                               status_click(
                                                                 "Visited",
-                                                                index,
-                                                                subIndex,
-                                                                question.topic_id
-                                                                // innerIndex,
-                                                                // innerKey,
-                                                                // topic
+                                                                
+                                                                question.topic_id                                                             
                                                               );
-                                                              SaveClick();
+                                                              SaveClick(question.topic_id);
                                                               console.log(
                                                                 question.topic_id
                                                               );
                                                             }
-                                                            // setStatus("visited")
                                                           }
                                                         >
                                                           Visited
@@ -459,15 +340,7 @@ export default function ProfilePage() {
                                                           onClick={() => {
                                                             status_click(
                                                               "Unvisited",
-                                                              index,
-                                                              subIndex,
-                                                              question.topic_id
-                                                              // innerIndex,
-                                                              // innerKey,
-                                                              // topic
-                                                            );
-                                                            // SaveClick();
-                                                            console.log(
+                                                             
                                                               question.topic_id
                                                             );
                                                           }}
@@ -497,13 +370,5 @@ export default function ProfilePage() {
         </Card.Body>
       )}
     </Card>
-    // <Fab
-    //   sx={fab.sx}
-    //   aria-label={fab.label}
-    //   color={fab.color}
-    //   onClick={SaveClick}
-    // >
-    //   {fab.icon}
-    // </Fab>
   );
 }
