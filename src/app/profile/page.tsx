@@ -172,6 +172,7 @@ export default function ProfilePage() {
 
   };
 
+
   return (
     <Card style={styles.container}>
       <center>
@@ -283,12 +284,26 @@ export default function ProfilePage() {
                                                           </Button>
                                                         </>
                                                       <br />
+                                                      <Container style={{
+                                                        position: "relative",
+                                                      }}>
+                                                      <div style={{
+                                                        position:'absolute',
+                                                        right:'150px',
+                                                        bottom:'-5px',
+                                                        display:'flex',
+                                                        alignItems:'center'
+                                                      }}>Make a Note :&nbsp;<textarea
+                                                      id="message"
+                                                      name="message"
+                                                      defaultValue={'initial'}
+                                                      style={{height:'37px'}}></textarea></div>
                                                       <DropdownButton
                                                         style={{
                                                           color: "#61dafb",
-                                                          position: "absolute",
-                                                          right: "10px",
-                                                          bottom: "10px",
+                                                          position:'absolute',
+                                                          right:'10px',
+                                                          bottom:'-5px',
 
                                                           textDecoration:
                                                             "none",
@@ -316,6 +331,7 @@ export default function ProfilePage() {
                                                               console.log(
                                                                 question.topic_id
                                                               );
+                                                              
                                                             }
                                                           }
                                                         >
@@ -335,7 +351,7 @@ export default function ProfilePage() {
                                                         >
                                                           Unvisited
                                                         </Dropdown.Item>
-                                                      </DropdownButton>
+                                                      </DropdownButton></Container>
                                                     </li>
                                                   </ul>
                                                 </Card>
