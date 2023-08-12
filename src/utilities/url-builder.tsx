@@ -10,7 +10,7 @@ export const PROFILE_URL = (BASE_URL:any) =>
     `${BASE_URL}/api/auth/profile`
 
 export const QUESTION_URL = (BASE_URL : any) =>
-    `${BASE_URL}/db/getQuestionData`
+    `${BASE_URL}/db/question-data/get_question_data`
 
 export const VISIT_URL = (BASE_URL : any) => 
-    `${BASE_URL}/db/saveUserVisit`
+    `${BASE_URL}/db/user-visits`

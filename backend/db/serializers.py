@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from .models import QuestionData, UserVisits, UserNotes
-class questionSerializer(serializers.ModelSerializer):
+class QuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model=QuestionData
         fields=['topic_id' , 'heading' , 'sub_heading' , 'heading_id' , 'sub_heading_id' , 'topic' , 'link'] 

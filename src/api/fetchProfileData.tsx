@@ -3,7 +3,6 @@ import axios from "axios";
 
 export const fetchProfileData = async (cookies :string) => {
       
-    console.log(cookies)
     const endpoint = PROFILE_URL(process.env.NEXT_PUBLIC_BASE_URL)
 
     const options = {

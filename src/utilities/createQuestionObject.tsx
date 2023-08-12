@@ -1,7 +1,7 @@
 import { fetchQuestionData } from "@/api/fetchQuestionData";
 
-export const createQuestions = async () => {
-  const response = await fetchQuestionData();
+export const createQuestions = async (token:string) => {
+  const response = await fetchQuestionData(token);
 
   const stepData = response.data.questions.reduce((acc : any, question:any) => {
     const {

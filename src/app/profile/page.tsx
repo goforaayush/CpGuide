@@ -141,7 +141,7 @@ export default function ProfilePage() {
 
   useEffect(() => {
     const fetchQuestions = async () => {
-      const questions = await createQuestions();
+      const questions = await createQuestions(cookies["token"]);
       setStepData(questions);
     };
     fetchQuestions();
