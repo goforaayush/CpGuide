@@ -11,17 +11,10 @@ import {
   Accordion,
 } from "react-bootstrap";
 import SaveIcon from "@mui/icons-material/Save";
-import Fab from "@mui/material/Fab";
 import { useCookies } from "react-cookie";
 import { toast } from "react-hot-toast";
-import data from "./data.json";
-
-import Tooltip from "@mui/material/Tooltip";
 import { useRouter } from "next/navigation";
-import { ElevatorSharp } from "@mui/icons-material";
-import { fetchQuestionData } from "@/api/fetchQuestionData";
 import { createQuestions } from "@/utilities/createQuestionObject";
-import axios from "axios";
 import { fetchProfileData } from "@/api/fetchProfileData";
 import { saveUserVisit } from "@/api/saveUserVisit";
 
@@ -31,12 +24,6 @@ interface UserData {
   fname: string;
   lname: string;
   links: string;
-}
-
-interface UrlData {
-  topic: string;
-  link: string;
-  status: string;
 }
 
 interface StepData {
@@ -69,6 +56,8 @@ interface Questions {
   link: string;
 }
 
+
+//better to create a css file for this
 const styles = {
   container: {
     background: "#1a1a1a",
@@ -107,8 +96,6 @@ export default function ProfilePage() {
   const [stepData, setStepData] = useState<StepData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [status, setStatus] = useState(Array(3).fill("unvisited"));
-  const [check, setCheck] = useState(true);
-  const [parsed, setParsed] = useState<any | null>(null);
 
   const toggleOuterCollapse = () => {
     setOuterOpen(!outerOpen);
@@ -173,7 +160,7 @@ export default function ProfilePage() {
     }
   };
 
-  //modify this later
+  //modify this later to check the status of each question and map the visit and unvisit accordingly
   const status_click = (
     token: string,
     topic_id: number
