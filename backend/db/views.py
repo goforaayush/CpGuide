@@ -13,8 +13,7 @@ from rest_framework.permissions import IsAuthenticated
 
 
 @api_view(["GET"])
-# @authentication_classes([SessionAuthentication,TokenAuthentication])
-# @permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def getQuestionData(request):
     try:
         items = QuestionData.objects.all()
@@ -26,12 +25,9 @@ def getQuestionData(request):
 
 
 @api_view(["POST"])
-# @authentication_classes([SessionAuthentication, TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def saveUserVisit(request):
     try:
-        print(request)
-        print(request.data)
         user = request.data.get("user")
         topic_id = request.data.get("topic_id")
         if not (user and topic_id):
@@ -58,10 +54,36 @@ def saveUserVisit(request):
     except Exception as e:
         print(e)
         return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def get_user_visit(request):
+    try:
+        user = request.data.get("user")
+        if not (user):
+            return Response(
+                {"error": "User is required in the request data."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        user_visit = UserVisits.objects.filter(user=user)
+        if user_visit:
+            serializer = UserVisitsSerializer(user_visit , many=True)
+            if serializer.is_valid():
+                return Response(
+                     {"visited questions": serializer.data},
+                    status=status.HTTP_200_OK,
+                )
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            return Response("this user has not visited any questions" , status=status.HTTP_404_NOT_FOUND)   
+    except Exception as e:
+        print(e)
+        return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 @api_view(["DELETE"])
-# @authentication_classes([SessionAuthentication, TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def deleteUserVisit(request):
     try:
@@ -89,7 +111,6 @@ def deleteUserVisit(request):
 
 
 @api_view(["POST"])
-# @authentication_classes([SessionAuthentication, TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def create_user_note(request):
     try:
@@ -122,7 +143,6 @@ def create_user_note(request):
 
 
 @api_view(["PUT"])
-# @authentication_classes([SessionAuthentication, TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def update_user_note(request):
     try:
@@ -149,7 +169,6 @@ def update_user_note(request):
 
 
 @api_view(["DELETE"])
-# @authentication_classes([SessionAuthentication, TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def delete_user_note(request):
     try:
@@ -174,7 +193,6 @@ def delete_user_note(request):
 
 
 @api_view(["GET"])
-# @authentication_classes([SessionAuthentication, TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def get_user_notes(request):
     try:

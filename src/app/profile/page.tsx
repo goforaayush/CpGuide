@@ -96,6 +96,7 @@ export default function ProfilePage() {
   const [stepData, setStepData] = useState<StepData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [status, setStatus] = useState(Array(3).fill("unvisited"));
+  const [visitedQuestions, setVisitedQuestions] = useState({});
 
   const toggleOuterCollapse = () => {
     setOuterOpen(!outerOpen);
