@@ -18,6 +18,8 @@ import { createQuestions } from "@/utilities/createQuestionObject";
 import { fetchProfileData } from "@/api/fetchProfileData";
 import { saveUserVisit } from "@/api/saveUserVisit";
 import { deleteUserVisit } from "@/api/deleteUserVisit";
+import { getUserVisit } from "@/api/getUserVisit";
+import { Try } from "@mui/icons-material";
 
 interface UserData {
   username: string;
@@ -127,6 +129,27 @@ export default function ProfilePage() {
         if (response.status === 200) {
           setUserData(obj);
         }
+        console.log(obj.username);
+        try {
+          const getVisitData = {
+          user: obj.username
+        }
+        const visitResponse = await getUserVisit(cookies["token"],getVisitData)
+        const visitData =  visitResponse.data
+        console.log(visitData['visited questions']);
+        const visitJSON = visitData['visited questions']
+        let copyStatus = status
+        for (let visit in visitJSON){
+          console.log(parseInt(visitJSON[visit].topicId));
+          copyStatus[parseInt(visitJSON[visit].topicId)]='Visited'
+        }
+        setStatus([...copyStatus])
+        } catch (error) {
+          console.log(error);
+          
+        }
+        
+        
       } catch (error) {
         console.error("Error fetching profile data:", error);
         toast.error("Error fetching profile data");
@@ -171,18 +194,6 @@ export default function ProfilePage() {
       console.log(error);
     }
   };
-
-  // //modify this later to check the status of each question and map the visit and unvisit accordingly
-  // const status_click = (
-  //   token: string,
-  //   topic_id: number
-  // ) => {
-  //   const copyStatus = status;
-  //   copyStatus[topic_id - 1] = token;
-  //   setStatus([...copyStatus]);
-  //   console.log(status);
-
-  // };
 
   const handleSelect = (e: string, index: number) => {
     console.log(e);

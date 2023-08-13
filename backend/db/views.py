@@ -47,26 +47,22 @@ class UserVisitsViewSet(viewsets.ViewSet):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    @action(detail=False, methods=["GET"])
+    @action(detail=False, methods=["POST"])
     def get_user_visit(self, request):
-        user = request.query_params.get("user")
+        user = request.data.get("user")
         if not user:
             return Response(
-                {"error": "User is required in the query parameters."},
+                {"error": "User is required in the request body."},
                 status=status.HTTP_400_BAD_REQUEST,
             )
         user_visit = UserVisits.objects.filter(user=user)
+        # print(user_visit['user'])
         if user_visit:
             serializer = UserVisitsSerializer(user_visit, many=True)
-            if serializer.is_valid():
-                return Response(
-                    {"visited questions": serializer.data},
-                    status=status.HTTP_200_OK,
-                )
-            else:
-                return Response(
-                    serializer.errors, status=status.HTTP_400_BAD_REQUEST
-                )
+            return Response(
+                {"visited questions": serializer.data},
+                status=status.HTTP_200_OK,
+            )
         else:
             return Response(
                 "this user has not visited any questions",
