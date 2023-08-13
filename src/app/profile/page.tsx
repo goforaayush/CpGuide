@@ -19,7 +19,6 @@ import { fetchProfileData } from "@/api/fetchProfileData";
 import { saveUserVisit } from "@/api/saveUserVisit";
 import { deleteUserVisit } from "@/api/deleteUserVisit";
 import { getUserVisit } from "@/api/getUserVisit";
-import { Try } from "@mui/icons-material";
 
 interface UserData {
   username: string;
@@ -98,15 +97,8 @@ export default function ProfilePage() {
   const [stepData, setStepData] = useState<StepData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [status, setStatus] = useState(Array(3).fill("Unvisited"));
-  const [visitedQuestions, setVisitedQuestions] = useState({});
+  const [visitedQuestions, setVisitedQuestions] = useState(Array(3).fill(""));
 
-  const toggleOuterCollapse = () => {
-    setOuterOpen(!outerOpen);
-  };
-
-  const toggleInnerCollapse = () => {
-    setInnerOpen(!innerOpen);
-  };
   const fabStyle = {
     position: "fixed",
     bottom: 16,
@@ -141,11 +133,13 @@ export default function ProfilePage() {
         let copyStatus = status
         for (let visit in visitJSON){
           console.log(parseInt(visitJSON[visit].topicId));
-          copyStatus[parseInt(visitJSON[visit].topicId)]='Visited'
+          copyStatus[parseInt(visitJSON[visit].topicId)-1]='Visited'
         }
         setStatus([...copyStatus])
+
         } catch (error) {
           console.log(error);
+          toast.error("Error fetching Visit Data")
           
         }
         
