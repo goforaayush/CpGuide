@@ -123,10 +123,8 @@ export default function ProfilePage() {
         }
         console.log(obj.username);
         try {
-          const getVisitData = {
-          user: obj.username
-        }
-        const visitResponse = await getUserVisit(cookies["token"],getVisitData)
+          
+        const visitResponse = await getUserVisit(cookies["token"],obj.username)
         const visitData =  visitResponse.data
         console.log(visitData['visited questions']);
         const visitJSON = visitData['visited questions']
@@ -140,7 +138,6 @@ export default function ProfilePage() {
         } catch (error) {
           console.log(error);
           toast.error("Error fetching Visit Data")
-          
         }
         
         

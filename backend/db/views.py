@@ -47,9 +47,9 @@ class UserVisitsViewSet(viewsets.ViewSet):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    @action(detail=False, methods=["POST"])
+    @action(detail=False, methods=["GET"])
     def get_user_visit(self, request):
-        user = request.data.get("user")
+        user = request.GET.get("user")
         if not user:
             return Response(
                 {"error": "User is required in the request body."},
@@ -163,8 +163,9 @@ class UserNotesViewSet(viewsets.ViewSet):
 
     @action(detail=False, methods=["GET"])
     def get_user_notes(self, request):
-        user = request.query_params.get("user")
-        topic_id = request.query_params.get("topic_id")
+        user = request.GET.get("user")
+        topic_id = request.GET.get("topic_id")
+        print(user,topic_id)
         if not (user and topic_id):
             return Response(
                 {
