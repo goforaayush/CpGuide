@@ -17,6 +17,7 @@ import { useRouter } from "next/navigation";
 import { createQuestions } from "@/utilities/createQuestionObject";
 import { fetchProfileData } from "@/api/fetchProfileData";
 import { saveUserVisit } from "@/api/saveUserVisit";
+import { deleteUserVisit } from "@/api/deleteUserVisit";
 
 interface UserData {
   username: string;
@@ -56,7 +57,6 @@ interface Questions {
   link: string;
 }
 
-
 //better to create a css file for this
 const styles = {
   container: {
@@ -95,7 +95,7 @@ export default function ProfilePage() {
   const [innerOpen, setInnerOpen] = useState<boolean>(false);
   const [stepData, setStepData] = useState<StepData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [status, setStatus] = useState(Array(3).fill("unvisited"));
+  const [status, setStatus] = useState(Array(3).fill("Unvisited"));
   const [visitedQuestions, setVisitedQuestions] = useState({});
 
   const toggleOuterCollapse = () => {
@@ -119,9 +119,9 @@ export default function ProfilePage() {
   const router = useRouter();
 
   useEffect(() => {
-    const setProfileData = async () => {  
+    const setProfileData = async () => {
       try {
-        const response = await fetchProfileData(cookies["token"])
+        const response = await fetchProfileData(cookies["token"]);
         const data = JSON.parse(response.data);
         let obj: UserData = data;
         if (response.status === 200) {
@@ -148,30 +148,52 @@ export default function ProfilePage() {
     setLoading(false);
   }, []);
 
-  const SaveClick = async (topic_id :number) => {
-
+  const SaveClick = async (topic_id: number) => {
     const data = {
-      topic_id: topic_id,    // change this later 
+      topic_id: topic_id, // change this later
       user: userData?.username,
-    }
+    };
     try {
-      const response = await saveUserVisit(cookies["token"] , data)
+      const response = await saveUserVisit(cookies["token"], data);
     } catch (error) {
       console.log(error);
     }
   };
 
-  //modify this later to check the status of each question and map the visit and unvisit accordingly
-  const status_click = (
-    token: string,
-    topic_id: number
-  ) => {
-    const copyStatus = status;
-    copyStatus[topic_id - 1] = token;
-    setStatus(copyStatus);
-
+  const DeleteVisit = async (topic_id: number) => {
+    const data = {
+      topic_id: topic_id, // change this later
+      user: userData?.username,
+    };
+    try {
+      const response = await deleteUserVisit(cookies["token"], data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
+  // //modify this later to check the status of each question and map the visit and unvisit accordingly
+  // const status_click = (
+  //   token: string,
+  //   topic_id: number
+  // ) => {
+  //   const copyStatus = status;
+  //   copyStatus[topic_id - 1] = token;
+  //   setStatus([...copyStatus]);
+  //   console.log(status);
+
+  // };
+
+  const handleSelect = (e: string, index: number) => {
+    console.log(e);
+    let copyStatus = [...status];
+    copyStatus[index - 1] = e;
+    setStatus(copyStatus);
+    if(e=='Visited')
+    SaveClick(index)
+    else
+    DeleteVisit(index)
+  };
 
   return (
     <Card style={styles.container}>
@@ -208,15 +230,16 @@ export default function ProfilePage() {
               </Card>
             )}
 
-              <Card style={styles.card}>
-                <Card.Title className="fw-bold h5 mb-4">
-                  <center>
-                    <Alert key="primary" variant="primary">
-                      Your Journey to a CP Gawd!!
-                    </Alert>
-                  </center>
-                </Card.Title>
-                {stepData.length > 0 && stepData.map((step: StepData, index: number) => {
+            <Card style={styles.card}>
+              <Card.Title className="fw-bold h5 mb-4">
+                <center>
+                  <Alert key="primary" variant="primary">
+                    Your Journey to a CP Gawd!!
+                  </Alert>
+                </center>
+              </Card.Title>
+              {stepData.length > 0 &&
+                stepData.map((step: StepData, index: number) => {
                   const subHeadings = step.subheadings || [];
                   return (
                     <Card style={styles.card} key={index}>
@@ -228,13 +251,17 @@ export default function ProfilePage() {
                               subHeadings.map(
                                 (subheading: SubHeadings, subIndex: number) => {
                                   return (
-                                    <Accordion defaultActiveKey={String(subIndex)} key={subheading.sub_heading_id}>
+                                    <Accordion
+                                      defaultActiveKey={String(subIndex)}
+                                      key={subheading.sub_heading_id}
+                                    >
                                       <Accordion.Header>
                                         {subheading.sub_heading}
                                       </Accordion.Header>
                                       <Accordion.Body>
-                                        {subheading.questions.length > 0 && subheading.questions.map(
-                                          (
+                                        {subheading.questions.length > 0 &&
+                                          subheading.questions.map(
+                                            (
                                               question: Questions,
                                               questionIndex: number
                                             ) => {
@@ -250,108 +277,105 @@ export default function ProfilePage() {
                                                   </center>
                                                   <ul className="list-unstyled">
                                                     <li>
-                                                        <>
-                                                          <Button
-                                                            style={
-                                                              {
-                                                                position:
-                                                                  "absolute",
-                                                                left: "10px",
-                                                                bottom: "10px",
-                                                              }
-                                                            }
-                                                            variant="outline-light"
-                                                            onClick= {() => {
-                                                              SaveClick(question.topic_id);
-                                                              status_click(
-                                                                "Visited",
-                                                                question.topic_id
-                                                              );
-                                                            }}
-                                                          >
-                                                            <a
-                                                              href={
-                                                                question.link
-                                                              }
-                                                              target="_blank"
-                                                              style={{
-                                                                color:
-                                                                  "#61dafb",
-                                                              }}
-                                                            >
-                                                              Solve
-                                                            </a>
-                                                          </Button>
-                                                        </>
-                                                      <br />
-                                                      <Container style={{
-                                                        position: "relative",
-                                                      }}>
-                                                      <div style={{
-                                                        position:'absolute',
-                                                        right:'150px',
-                                                        bottom:'-5px',
-                                                        display:'flex',
-                                                        alignItems:'center'
-                                                      }}>Make a Note :&nbsp;<textarea
-                                                      id="message"
-                                                      name="message"
-                                                      defaultValue={'initial'}
-                                                      style={{height:'37px'}}></textarea></div>
-                                                      <DropdownButton
-                                                        style={{
-                                                          color: "#61dafb",
-                                                          position:'absolute',
-                                                          right:'10px',
-                                                          bottom:'-5px',
-
-                                                          textDecoration:
-                                                            "none",
-                                                        }}
-                                                        variant="outline-light"
-                                                        title={
-                                                          status[
-                                                            question.topic_id -
-                                                              1
-                                                          ]
-                                                        }
-                                                      >
-                                                        <Dropdown.Item
+                                                      <>
+                                                        <Button
                                                           style={{
-                                                            color: "#61dafb",
+                                                            position:
+                                                              "absolute",
+                                                            left: "10px",
+                                                            bottom: "10px",
                                                           }}
-                                                          onClick={
-                                                            () => {
-                                                              status_click(
-                                                                "Visited",
-                                                                
-                                                                question.topic_id                                                             
-                                                              );
-                                                              SaveClick(question.topic_id);
-                                                              console.log(
-                                                                question.topic_id
-                                                              );
-                                                              
-                                                            }
-                                                          }
-                                                        >
-                                                          Visited
-                                                        </Dropdown.Item>
-                                                        <Dropdown.Item
-                                                          style={{
-                                                            color: "#61dafb",
-                                                          }}
+                                                          variant="outline-light"
                                                           onClick={() => {
-                                                            status_click(
-                                                              "Unvisited",
-                                                             
+                                                            handleSelect(
+                                                              "Visited",
                                                               question.topic_id
                                                             );
                                                           }}
                                                         >
-                                                          Unvisited
-                                                        </Dropdown.Item>
-                                                      </DropdownButton></Container>
+                                                          <a
+                                                            href={question.link}
+                                                            target="_blank"
+                                                            style={{
+                                                              color: "#61dafb",
+                                                            }}
+                                                          >
+                                                            Solve
+                                                          </a>
+                                                        </Button>
+                                                      </>
+                                                      <br />
+                                                      <Container
+                                                        style={{
+                                                          position: "relative",
+                                                        }}
+                                                      >
+                                                        <div
+                                                          style={{
+                                                            position:
+                                                              "absolute",
+                                                            right: "150px",
+                                                            bottom: "-5px",
+                                                            display: "flex",
+                                                            alignItems:
+                                                              "center",
+                                                          }}
+                                                        >
+                                                          Make a Note :&nbsp;
+                                                          <textarea
+                                                            id="message"
+                                                            name="message"
+                                                            defaultValue={
+                                                              "initial"
+                                                            }
+                                                            style={{
+                                                              height: "37px",
+                                                            }}
+                                                          ></textarea>
+                                                        </div>
+                                                        <DropdownButton
+                                                          style={{
+                                                            color: "#61dafb",
+                                                            position:
+                                                              "absolute",
+                                                            right: "10px",
+                                                            bottom: "-5px",
+
+                                                            textDecoration:
+                                                              "none",
+                                                          }}
+                                                          onSelect={(e) =>
+                                                            handleSelect(
+                                                              e!,
+                                                              question.topic_id
+                                                            )
+                                                          }
+                                                          variant="outline-light"
+                                                          title={
+                                                            status[
+                                                              question.topic_id -
+                                                                1
+                                                            ]
+                                                          }
+                                                        >
+                                                          <Dropdown.Item
+                                                            style={{
+                                                              color: "#61dafb",
+                                                            }}
+                                                            eventKey="Visited"
+                                                          >
+                                                            Visited
+                                                          </Dropdown.Item>
+                                                          <Dropdown.Item
+                                                            eventKey="Unvisited"
+                                                            style={{
+                                                              color: "#61dafb",
+                                                            }}
+                                                          >
+                                                            Unvisited
+                                                          </Dropdown.Item>
+                                                        </DropdownButton>
+                                                      </Container>
                                                     </li>
                                                   </ul>
                                                 </Card>
