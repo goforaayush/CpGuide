@@ -24,6 +24,7 @@ import { getUserVisit } from "@/api/getUserVisit";
 import { getUserNote } from "@/api/getUserNote";
 import { updateUserNote } from "@/api/updateUserNote";
 import { deleteUserNote } from "@/api/deleteUserNote";
+import { useMediaQuery } from "react-responsive";
 
 interface UserData {
   username: string;
@@ -103,18 +104,14 @@ export default function ProfilePage() {
   const [noteBoxState, setnoteBoxState] = useState(Array(3).fill(false));
   const [note, setNote] = useState("");
 
-  // const fabStyle = {
-  //   position: "fixed",
-  //   bottom: 16,
-  //   right: 16,
-  // };
-  // const fab = {
-  //   color: "primary" as "primary",
-  //   sx: fabStyle,
-  //   icon: <SaveIcon />,
-  //   label: "Add",
-  // };
-  // const router = useRouter();
+  const isBigger = useMediaQuery({ query: "(min-width: 1401px)" });
+  const isMediumMax = useMediaQuery({ query: "(max-width: 1400px)" });
+  const isMediumMin = useMediaQuery({ query: "(min-width: 1201px)" });
+  const isDesktopOrLaptopMax = useMediaQuery({ query: "(max-width: 1200px)" });
+  const isDesktopOrLaptopMin = useMediaQuery({ query: "(min-width: 992px)" });
+  const isTabletMin = useMediaQuery({ query: "(min-width: 780px)" });
+  const isTabletMax = useMediaQuery({ query: "(max-width: 991px)" });
+  const isMobile = useMediaQuery({ query: "(max-width: 779px)" });
 
   useEffect(() => {
     const setProfileData = async () => {
@@ -218,7 +215,7 @@ export default function ProfilePage() {
     }
   };
 
-  const getNote = async (topic_id:number) => {
+  const getNote = async (topic_id: number) => {
     console.log(topic_id);
 
     const noteResponse = await getUserNote(
@@ -316,31 +313,62 @@ export default function ProfilePage() {
                                                   <ul className="list-unstyled">
                                                     <li>
                                                       <>
-                                                        <Button
-                                                          style={{
-                                                            position:
-                                                              "absolute",
-                                                            left: "10px",
-                                                            bottom: "10px",
-                                                          }}
-                                                          variant="outline-light"
-                                                          onClick={() => {
-                                                            handleSelect(
-                                                              "Visited",
-                                                              question.topic_id
-                                                            );
-                                                          }}
-                                                        >
-                                                          <a
-                                                            href={question.link}
-                                                            target="_blank"
+                                                        {isMobile && (
+                                                          <center>
+                                                            <Button
+                                                              variant="outline-light"
+                                                              onClick={() => {
+                                                                handleSelect(
+                                                                  "Visited",
+                                                                  question.topic_id
+                                                                );
+                                                              }}
+                                                            >
+                                                              <a
+                                                                href={
+                                                                  question.link
+                                                                }
+                                                                target="_blank"
+                                                                style={{
+                                                                  color:
+                                                                    "#61dafb",
+                                                                }}
+                                                              >
+                                                                Solve
+                                                              </a>
+                                                            </Button>
+                                                          </center>
+                                                        )}
+                                                        {isTabletMin && (
+                                                          <Button
                                                             style={{
-                                                              color: "#61dafb",
+                                                              position:
+                                                                "absolute",
+                                                              left: "1%",
+                                                              bottom: "10px",
+                                                            }}
+                                                            variant="outline-light"
+                                                            onClick={() => {
+                                                              handleSelect(
+                                                                "Visited",
+                                                                question.topic_id
+                                                              );
                                                             }}
                                                           >
-                                                            Solve
-                                                          </a>
-                                                        </Button>
+                                                            <a
+                                                              href={
+                                                                question.link
+                                                              }
+                                                              target="_blank"
+                                                              style={{
+                                                                color:
+                                                                  "#61dafb",
+                                                              }}
+                                                            >
+                                                              Solve
+                                                            </a>
+                                                          </Button>
+                                                        )}
                                                       </>
                                                       <br />
                                                       <Container
@@ -348,23 +376,100 @@ export default function ProfilePage() {
                                                           position: "relative",
                                                         }}
                                                       >
-                                                        <Button
-                                                          style={{
-                                                            position:
-                                                              "absolute",
-                                                            right: "150px",
-                                                            bottom: "-5px",
-                                                          }}
-                                                          variant="outline-light"
-                                                          onClick={() => {
-                                                            handleNoteBox(
-                                                              question.topic_id
-                                                            );
-                                                            setNote("");
-                                                          }}
-                                                        >
-                                                          Make a Note
-                                                        </Button>
+                                                        {isMobile && (
+                                                          <center>
+                                                            <Button
+                                                              variant="outline-light"
+                                                              onClick={() => {
+                                                                handleNoteBox(
+                                                                  question.topic_id
+                                                                );
+                                                                setNote("");
+                                                              }}
+                                                            >
+                                                              Make a Note
+                                                            </Button>
+                                                          </center>
+                                                        )}
+                                                        {isMediumMax &&
+                                                          isMediumMin && (
+                                                            <Button
+                                                              style={{
+                                                                position:
+                                                                  "absolute",
+                                                                right: "12.5%",
+                                                                bottom: "-5px",
+                                                              }}
+                                                              variant="outline-light"
+                                                              onClick={() => {
+                                                                handleNoteBox(
+                                                                  question.topic_id
+                                                                );
+                                                                setNote("");
+                                                              }}
+                                                            >
+                                                              Make a Note
+                                                            </Button>
+                                                          )}
+                                                        {isDesktopOrLaptopMax &&
+                                                          isDesktopOrLaptopMin && (
+                                                            <Button
+                                                              style={{
+                                                                position:
+                                                                  "absolute",
+                                                                right: "15%",
+                                                                bottom: "-5px",
+                                                              }}
+                                                              variant="outline-light"
+                                                              onClick={() => {
+                                                                handleNoteBox(
+                                                                  question.topic_id
+                                                                );
+                                                                setNote("");
+                                                              }}
+                                                            >
+                                                              Make a Note
+                                                            </Button>
+                                                          )}
+                                                        {isBigger && (
+                                                          <Button
+                                                            style={{
+                                                              position:
+                                                                "absolute",
+                                                              right: "10.5%",
+                                                              bottom: "-5px",
+                                                            }}
+                                                            variant="outline-light"
+                                                            onClick={() => {
+                                                              handleNoteBox(
+                                                                question.topic_id
+                                                              );
+                                                              setNote("");
+                                                            }}
+                                                          >
+                                                            Make a Note
+                                                          </Button>
+                                                        )}
+                                                        {isTabletMax &&
+                                                          isTabletMin && (
+                                                            <Button
+                                                              style={{
+                                                                position:
+                                                                  "absolute",
+                                                                right: "20%",
+                                                                bottom: "-5px",
+                                                              }}
+                                                              variant="outline-light"
+                                                              onClick={() => {
+                                                                handleNoteBox(
+                                                                  question.topic_id
+                                                                );
+                                                                setNote("");
+                                                              }}
+                                                            >
+                                                              Make a Note
+                                                            </Button>
+                                                          )}
                                                         <Modal
                                                           centered
                                                           show={
@@ -374,7 +479,9 @@ export default function ProfilePage() {
                                                             ]
                                                           }
                                                           onShow={() => {
-                                                            getNote(question.topic_id);
+                                                            getNote(
+                                                              question.topic_id
+                                                            );
                                                           }}
                                                           onHide={() => {
                                                             handleNoteBox(
@@ -401,20 +508,18 @@ export default function ProfilePage() {
                                                                   autoFocus
                                                                   as="textarea"
                                                                   rows={10}
-                                                                  // defaultValue={
-                                                                  //   note
-                                                                  // }
                                                                   value={note}
                                                                   onChange={(
                                                                     e
-                                                                  ) =>
-                                                                    {setNote(
+                                                                  ) => {
+                                                                    setNote(
                                                                       e.target
                                                                         .value
-                                                                    )
-                                                                    console.log(note);}
-                                                                    
-                                                                  }
+                                                                    );
+                                                                    console.log(
+                                                                      note
+                                                                    );
+                                                                  }}
                                                                 />
                                                               </Form.Group>
                                                             </Form>
@@ -453,47 +558,96 @@ export default function ProfilePage() {
                                                             </Button>
                                                           </Modal.Footer>
                                                         </Modal>
-                                                        <DropdownButton
-                                                          style={{
-                                                            color: "#61dafb",
-                                                            position:
-                                                              "absolute",
-                                                            right: "10px",
-                                                            bottom: "-5px",
-                                                            textDecoration:
-                                                              "none",
-                                                          }}
-                                                          onSelect={(e) =>
-                                                            handleSelect(
-                                                              e!,
-                                                              question.topic_id
-                                                            )
-                                                          }
-                                                          variant="outline-light"
-                                                          title={
-                                                            status[
-                                                              question.topic_id -
-                                                                1
-                                                            ]
-                                                          }
-                                                        >
-                                                          <Dropdown.Item
+                                                        <br />
+                                                        {isMobile && (
+                                                          <center>
+                                                            <DropdownButton
+                                                              style={{
+                                                                color:
+                                                                  "#61dafb",
+                                                                textDecoration:
+                                                                  "none",
+                                                              }}
+                                                              onSelect={(e) =>
+                                                                handleSelect(
+                                                                  e!,
+                                                                  question.topic_id
+                                                                )
+                                                              }
+                                                              variant="outline-light"
+                                                              title={
+                                                                status[
+                                                                  question.topic_id -
+                                                                    1
+                                                                ]
+                                                              }
+                                                            >
+                                                              <Dropdown.Item
+                                                                style={{
+                                                                  color:
+                                                                    "#61dafb",
+                                                                }}
+                                                                eventKey="Visited"
+                                                              >
+                                                                Visited
+                                                              </Dropdown.Item>
+                                                              <Dropdown.Item
+                                                                eventKey="Unvisited"
+                                                                style={{
+                                                                  color:
+                                                                    "#61dafb",
+                                                                }}
+                                                              >
+                                                                Unvisited
+                                                              </Dropdown.Item>
+                                                            </DropdownButton>
+                                                          </center>
+                                                        )}
+                                                        {isTabletMin && (
+                                                          <DropdownButton
                                                             style={{
                                                               color: "#61dafb",
+                                                              position:
+                                                                "absolute",
+                                                              right: "1%",
+                                                              bottom: "-5px",
+                                                              textDecoration:
+                                                                "none",
                                                             }}
-                                                            eventKey="Visited"
+                                                            onSelect={(e) =>
+                                                              handleSelect(
+                                                                e!,
+                                                                question.topic_id
+                                                              )
+                                                            }
+                                                            variant="outline-light"
+                                                            title={
+                                                              status[
+                                                                question.topic_id -
+                                                                  1
+                                                              ]
+                                                            }
                                                           >
-                                                            Visited
-                                                          </Dropdown.Item>
-                                                          <Dropdown.Item
-                                                            eventKey="Unvisited"
-                                                            style={{
-                                                              color: "#61dafb",
-                                                            }}
-                                                          >
-                                                            Unvisited
-                                                          </Dropdown.Item>
-                                                        </DropdownButton>
+                                                            <Dropdown.Item
+                                                              style={{
+                                                                color:
+                                                                  "#61dafb",
+                                                              }}
+                                                              eventKey="Visited"
+                                                            >
+                                                              Visited
+                                                            </Dropdown.Item>
+                                                            <Dropdown.Item
+                                                              eventKey="Unvisited"
+                                                              style={{
+                                                                color:
+                                                                  "#61dafb",
+                                                              }}
+                                                            >
+                                                              Unvisited
+                                                            </Dropdown.Item>
+                                                          </DropdownButton>
+                                                        )}
                                                       </Container>
                                                     </li>
                                                   </ul>
