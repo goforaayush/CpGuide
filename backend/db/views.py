@@ -93,33 +93,33 @@ class UserVisitsViewSet(viewsets.ViewSet):
 class UserNotesViewSet(viewsets.ViewSet):
     permission_classes = [IsAuthenticated]
 
-    @action(detail=False, methods=["POST"])
-    def create_user_note(self, request):
-        user = request.data.get("user")
-        topic_id = request.data.get("topic_id")
-        note = request.data.get("note")
-        if not (user and topic_id and note):
-            return Response(
-                {
-                    "error": "User, topic_id, and note are required in the request data."
-                },
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-        user_note = UserNotes.objects.filter(user=user, topicId=topic_id).first()
-        if user_note:
-            return Response(
-                {"status": "Note already exists for the user and topic ID."},
-                status=status.HTTP_200_OK,
-            )
-        data = {"user": user, "topicId": topic_id, "note": note}
-        serializer = UserNotesSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(
-                {"status": "New user note saved."}, status=status.HTTP_201_CREATED
-            )
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    # @action(detail=False, methods=["POST"])
+    # def create_user_note(self, request):
+    #     user = request.data.get("user")
+    #     topic_id = request.data.get("topic_id")
+    #     note = request.data.get("note")
+    #     if not (user and topic_id and note):
+    #         return Response(
+    #             {
+    #                 "error": "User, topic_id, and note are required in the request data."
+    #             },
+    #             status=status.HTTP_400_BAD_REQUEST,
+    #         )
+    #     user_note = UserNotes.objects.filter(user=user, topicId=topic_id).first()
+    #     if user_note:
+    #         return Response(
+    #             {"status": "Note already exists for the user and topic ID."},
+    #             status=status.HTTP_200_OK,
+    #         )
+    #     data = {"user": user, "topicId": topic_id, "note": note}
+    #     serializer = UserNotesSerializer(data=data)
+    #     if serializer.is_valid():
+    #         serializer.save()
+    #         return Response(
+    #             {"status": "New user note saved."}, status=status.HTTP_201_CREATED
+    #         )
+    #     else:
+    #         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @action(detail=False, methods=["PUT"])
     def update_user_note(self, request):
@@ -135,10 +135,19 @@ class UserNotesViewSet(viewsets.ViewSet):
             )
         user_note = UserNotes.objects.filter(user=user, topicId=topic_id).first()
         if not user_note:
-            return Response(
-                {"status": "Note does not exist for the user and topic ID."},
-                status=status.HTTP_200_OK,
-            )
+            # return Response(
+            #     {"status": "Note does not exist for the user and topic ID."},
+            #     status=status.HTTP_200_OK,
+            # )
+            data = {"user": user, "topicId": topic_id, "note": note}
+            serializer = UserNotesSerializer(data=data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(
+                    {"status": "New user note saved."}, status=status.HTTP_201_CREATED
+                )
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         user_note.note = note
         user_note.save()
         return Response({"status": "User note updated."}, status=status.HTTP_200_OK)
@@ -165,7 +174,7 @@ class UserNotesViewSet(viewsets.ViewSet):
     def get_user_notes(self, request):
         user = request.GET.get("user")
         topic_id = request.GET.get("topic_id")
-        print(user,topic_id)
+        print(topic_id)
         if not (user and topic_id):
             return Response(
                 {
@@ -174,5 +183,7 @@ class UserNotesViewSet(viewsets.ViewSet):
                 status=status.HTTP_400_BAD_REQUEST,
             )
         user_notes = UserNotes.objects.filter(user=user, topicId=topic_id)
+        
         serializer = UserNotesSerializer(user_notes, many=True)
+        print(serializer.data)
         return Response({"user_notes": serializer.data}, status=status.HTTP_200_OK)

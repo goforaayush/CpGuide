@@ -14,3 +14,6 @@ export const QUESTION_URL = (BASE_URL : any) =>
 
 export const VISIT_URL = (BASE_URL : any) => 
     `${BASE_URL}/db/user-visits`
+
+export const NOTE_URL = (BASE_URL : any) => 
+    `${BASE_URL}/db/user-notes`

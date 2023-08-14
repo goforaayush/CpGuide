@@ -9,6 +9,8 @@ import {
   Dropdown,
   Alert,
   Accordion,
+  Form,
+  Modal,
 } from "react-bootstrap";
 import SaveIcon from "@mui/icons-material/Save";
 import { useCookies } from "react-cookie";
@@ -19,6 +21,9 @@ import { fetchProfileData } from "@/api/fetchProfileData";
 import { saveUserVisit } from "@/api/saveUserVisit";
 import { deleteUserVisit } from "@/api/deleteUserVisit";
 import { getUserVisit } from "@/api/getUserVisit";
+import { getUserNote } from "@/api/getUserNote";
+import { updateUserNote } from "@/api/updateUserNote";
+import { deleteUserNote } from "@/api/deleteUserNote";
 
 interface UserData {
   username: string;
@@ -92,25 +97,24 @@ const styles = {
 export default function ProfilePage() {
   const [cookies] = useCookies(["token"]);
   const [userData, setUserData] = useState<UserData | null>(null);
-  const [outerOpen, setOuterOpen] = useState<boolean>(false);
-  const [innerOpen, setInnerOpen] = useState<boolean>(false);
   const [stepData, setStepData] = useState<StepData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [status, setStatus] = useState(Array(3).fill("Unvisited"));
-  const [visitedQuestions, setVisitedQuestions] = useState(Array(3).fill(""));
+  const [noteBoxState, setnoteBoxState] = useState(Array(3).fill(false));
+  const [note, setNote] = useState("");
 
-  const fabStyle = {
-    position: "fixed",
-    bottom: 16,
-    right: 16,
-  };
-  const fab = {
-    color: "primary" as "primary",
-    sx: fabStyle,
-    icon: <SaveIcon />,
-    label: "Add",
-  };
-  const router = useRouter();
+  // const fabStyle = {
+  //   position: "fixed",
+  //   bottom: 16,
+  //   right: 16,
+  // };
+  // const fab = {
+  //   color: "primary" as "primary",
+  //   sx: fabStyle,
+  //   icon: <SaveIcon />,
+  //   label: "Add",
+  // };
+  // const router = useRouter();
 
   useEffect(() => {
     const setProfileData = async () => {
@@ -123,24 +127,23 @@ export default function ProfilePage() {
         }
         console.log(obj.username);
         try {
-          
-        const visitResponse = await getUserVisit(cookies["token"],obj.username)
-        const visitData =  visitResponse.data
-        console.log(visitData['visited questions']);
-        const visitJSON = visitData['visited questions']
-        let copyStatus = status
-        for (let visit in visitJSON){
-          console.log(parseInt(visitJSON[visit].topicId));
-          copyStatus[parseInt(visitJSON[visit].topicId)-1]='Visited'
-        }
-        setStatus([...copyStatus])
-
+          const visitResponse = await getUserVisit(
+            cookies["token"],
+            obj.username
+          );
+          const visitData = visitResponse.data;
+          console.log(visitData["visited questions"]);
+          const visitJSON = visitData["visited questions"];
+          let copyStatus = status;
+          for (let visit in visitJSON) {
+            console.log(parseInt(visitJSON[visit].topicId));
+            copyStatus[parseInt(visitJSON[visit].topicId) - 1] = "Visited";
+          }
+          setStatus([...copyStatus]);
         } catch (error) {
           console.log(error);
-          toast.error("Error fetching Visit Data")
+          toast.error("Error fetching Visit Data");
         }
-        
-        
       } catch (error) {
         console.error("Error fetching profile data:", error);
         toast.error("Error fetching profile data");
@@ -191,12 +194,45 @@ export default function ProfilePage() {
     let copyStatus = [...status];
     copyStatus[index - 1] = e;
     setStatus(copyStatus);
-    if(e=='Visited')
-    SaveClick(index)
-    else
-    DeleteVisit(index)
+    if (e == "Visited") SaveClick(index);
+    else DeleteVisit(index);
+  };
+  const handleNoteBox = (id: number) => {
+    let copyNoteBoxState = noteBoxState;
+    copyNoteBoxState[id - 1] = !copyNoteBoxState[id - 1];
+    setnoteBoxState([...copyNoteBoxState]);
   };
 
+  const handleNoteSave = async (topic_id: number, note: string) => {
+    const data = {
+      user: userData!.username,
+      topic_id: topic_id,
+      note: note,
+    };
+    if (note != "") {
+      const response = await updateUserNote(cookies["token"], data);
+      console.log(response.data);
+    } else {
+      const response = await deleteUserNote(cookies["token"], data);
+      console.log(response.data);
+    }
+  };
+
+  const getNote = async (topic_id:number) => {
+    console.log(topic_id);
+
+    const noteResponse = await getUserNote(
+      cookies["token"],
+      userData!.username,
+      topic_id
+    );
+
+    if (noteResponse.data.user_notes.length == 1) {
+      const notes = noteResponse.data.user_notes[0].note;
+      console.log(notes);
+      setNote(notes);
+    }
+  };
   return (
     <Card style={styles.container}>
       <center>
@@ -312,29 +348,111 @@ export default function ProfilePage() {
                                                           position: "relative",
                                                         }}
                                                       >
-                                                        <div
+                                                        <Button
                                                           style={{
                                                             position:
                                                               "absolute",
                                                             right: "150px",
                                                             bottom: "-5px",
-                                                            display: "flex",
-                                                            alignItems:
-                                                              "center",
+                                                          }}
+                                                          variant="outline-light"
+                                                          onClick={() => {
+                                                            handleNoteBox(
+                                                              question.topic_id
+                                                            );
+                                                            setNote("");
                                                           }}
                                                         >
-                                                          Make a Note :&nbsp;
-                                                          <textarea
-                                                            id="message"
-                                                            name="message"
-                                                            defaultValue={
-                                                              "initial"
-                                                            }
-                                                            style={{
-                                                              height: "37px",
-                                                            }}
-                                                          ></textarea>
-                                                        </div>
+                                                          Make a Note
+                                                        </Button>
+                                                        <Modal
+                                                          centered
+                                                          show={
+                                                            noteBoxState[
+                                                              question.topic_id -
+                                                                1
+                                                            ]
+                                                          }
+                                                          onShow={() => {
+                                                            getNote(question.topic_id);
+                                                          }}
+                                                          onHide={() => {
+                                                            handleNoteBox(
+                                                              question.topic_id
+                                                            );
+                                                          }}
+                                                        >
+                                                          <Modal.Header
+                                                            closeButton
+                                                          >
+                                                            <Modal.Title className="text-white">
+                                                              Make a Note
+                                                            </Modal.Title>
+                                                          </Modal.Header>
+                                                          <Modal.Body>
+                                                            <Form>
+                                                              <Form.Group
+                                                                className="mb-3"
+                                                                controlId="exampleForm.ControlTextarea1"
+                                                              >
+                                                                <Form.Control
+                                                                  type="text"
+                                                                  placeholder="Note Here..."
+                                                                  autoFocus
+                                                                  as="textarea"
+                                                                  rows={10}
+                                                                  // defaultValue={
+                                                                  //   note
+                                                                  // }
+                                                                  value={note}
+                                                                  onChange={(
+                                                                    e
+                                                                  ) =>
+                                                                    {setNote(
+                                                                      e.target
+                                                                        .value
+                                                                    )
+                                                                    console.log(note);}
+                                                                    
+                                                                  }
+                                                                />
+                                                              </Form.Group>
+                                                            </Form>
+                                                          </Modal.Body>
+                                                          <Modal.Footer>
+                                                            <div
+                                                              style={{
+                                                                color: "white",
+                                                                cursor:
+                                                                  "pointer",
+                                                              }}
+                                                              onClick={() => {
+                                                                handleNoteBox(
+                                                                  question.topic_id
+                                                                );
+                                                              }}
+                                                            >
+                                                              Close
+                                                            </div>
+                                                            <Button
+                                                              variant="outline-light"
+                                                              onClick={() => {
+                                                                handleNoteSave(
+                                                                  question.topic_id,
+                                                                  note
+                                                                );
+                                                                handleNoteBox(
+                                                                  question.topic_id
+                                                                );
+                                                                console.log(
+                                                                  note
+                                                                );
+                                                              }}
+                                                            >
+                                                              Save Changes
+                                                            </Button>
+                                                          </Modal.Footer>
+                                                        </Modal>
                                                         <DropdownButton
                                                           style={{
                                                             color: "#61dafb",
@@ -342,7 +460,6 @@ export default function ProfilePage() {
                                                               "absolute",
                                                             right: "10px",
                                                             bottom: "-5px",
-
                                                             textDecoration:
                                                               "none",
                                                           }}
