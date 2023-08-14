@@ -1,8 +1,8 @@
 "use client";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./globals.css";
-import { Roboto_Mono, Roboto_Slab } from "next/font/google";
-import { Container, SSRProvider } from "@/components/bootstrap";
+import { Roboto_Slab } from "next/font/google";
+import { SSRProvider } from "@/components/bootstrap";
 import { CookiesProvider } from "react-cookie";
 import NavBar from "@/components/NavBar";
 import { Toaster } from "react-hot-toast";

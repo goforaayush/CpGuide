@@ -31,11 +31,233 @@
         "fields": {
             "topic_id": "3",
             "heading_id" : "1",
+            "sub_heading_id" : "1",
+            "heading" : "Step 1: Learn the basics",
+            "sub_heading" :"Step 1.1: Things to Know in C++/Java/Python or any language",
+            "topic": "If Else statements",
+            "link": "https://practice.geeksforgeeks.org/problems/java-if-else-decision-making0924/0?category%5B%5D=Java&amp;category%5B%5D=Java&amp;difficulty%5B%5D=-2&amp;page=1&amp;query=category%5B%5DJavadifficulty%5B%5D-2page1category%5B%5DJava"
+        }
+    },
+    {
+        "model": "db.QuestionData",
+        "pk": 4,
+        "fields": {
+            "topic_id": "4",
+            "heading_id" : "1",
+            "sub_heading_id" : "1",
+            "heading" : "Step 1: Learn the basics",
+            "sub_heading" :"Step 1.1: Things to Know in C++/Java/Python or any language",
+            "topic": "Switch Statement",
+            "link": "Dhttps://practice.geeksforgeeks.org/problems/java-if-else-decision-making0924/0?category%5B%5D=Java&amp;category%5B%5=Java&amp;difficulty%5B%5D=-2&amp;page=1&amp;query=category%5B%5DJavadifficulty%5B%5D-2page1category%5B%5DJava"
+        }
+    },
+    {
+        "model": "db.QuestionData",
+        "pk": 3,
+        "fields": {
+            "topic_id": "3",
+            "heading_id" : "1",
+            "sub_heading_id" : "1",
+            "heading" : "Step 1: Learn the basics",
+            "sub_heading" :"Step 1.1: Things to Know in C++/Java/Python or any language",
+            "topic": "If Else statements",
+            "link": "https://practice.geeksforgeeks.org/problems/java-if-else-decision-making0924/0?category%5B%5D=Java&amp;category%5B%5D=Java&amp;difficulty%5B%5D=-2&amp;page=1&amp;query=category%5B%5DJavadifficulty%5B%5D-2page1category%5B%5DJava"
+        }
+    },
+    {
+        "model": "db.QuestionData",
+        "pk": 3,
+        "fields": {
+            "topic_id": "3",
+            "heading_id" : "1",
+            "sub_heading_id" : "1",
+            "heading" : "Step 1: Learn the basics",
+            "sub_heading" :"Step 1.1: Things to Know in C++/Java/Python or any language",
+            "topic": "If Else statements",
+            "link": "https://practice.geeksforgeeks.org/problems/java-switch-case-statement3529/"
+        }
+    },
+    {
+        "model": "db.QuestionData",
+        "pk": 5,
+        "fields": {
+            "topic_id": "5",
+            "heading_id" : "1",
+            "sub_heading_id" : "1",
+            "heading" : "Step 1: Learn the basics",
+            "sub_heading" :"Step 1.1: Things to Know in C++/Java/Python or any language",
+            "topic": "While loops",
+            "link": "https://practice.geeksforgeeks.org/problems/while-loop-printtable-java/1"
+        }
+    },
+    {
+        "model": "db.QuestionData",
+        "pk": 6,
+        "fields": {
+            "topic_id": "6",
+            "heading_id" : "1",
+            "sub_heading_id" : "1",
+            "heading" : "Step 1: Learn the basics",
+            "sub_heading" :"Step 1.1: Things to Know in C++/Java/Python or any language",
+            "topic": "Functions (Pass by Reference and Va\u2026",
+            "link": "https://bit.ly/3DqE0ac"
+        }
+    },
+    {
+        "model": "db.QuestionData",
+        "pk": 7,
+        "fields": {
+            "topic_id": "7",
+            "heading_id" : "1",
             "sub_heading_id" : "2",
-            "heading" : "Step 1: Learn the basics dupicate",
-            "sub_heading" :"Step 1.1: Things to Know in C++/Java/Python or any language duplicate",
-            "topic": "User Input / Output",
-            "link": "https://practice.geeksforgeeks.org/problems/search-query-auto-complete/0?category%5B%5D=Strings&amp;category%5B%5D=Strings&amp;problemStatus=unsolved&amp;difficulty%5B%5D=2&amp;page=1&amp;query=category%5B%5DStringsproblemStatusunsolveddifficulty%5B%5D2page1category%5B%5DSt"
+            "heading" : "Step 1: Learn the basics",
+            "sub_heading" :"Step 1.2: Know Basic Maths",
+            "topic": "Count Digits",
+            "link": "https://practice.geeksforgeeks.org/problems/count-digits5716/1"
+        }
+    },
+    {
+        "model": "db.QuestionData",
+        "pk": 7,
+        "fields": {
+            "topic_id": "7",
+            "heading_id" : "1",
+            "sub_heading_id" : "2",
+            "heading" : "Step 1: Learn the basics",
+            "sub_heading" :"Step 1.2: Know Basic Maths",
+            "topic": "Reverse a Number",
+            "link": "https://practice.geeksforgeeks.org/problems/reverse-bits3556/1"
+        }
+    },
+    {
+        "model": "db.QuestionData",
+        "pk": 8,
+        "fields": {
+            "topic_id": "8",
+            "heading_id" : "1",
+            "sub_heading_id" : "2",
+            "heading" : "Step 1: Learn the basics",
+            "sub_heading" :"Step 1.2: Know Basic Maths",
+            "topic": "Check Palindrome",
+            "link": "https://practice.geeksforgeeks.org/problems/palindrome0746/1"
+        }
+    },
+    {
+        "model": "db.QuestionData",
+        "pk": 9,
+        "fields": {
+            "topic_id": "9",
+            "heading_id" : "1",
+            "sub_heading_id" : "2",
+            "heading" : "Step 1: Learn the basics",
+            "sub_heading" :"Step 1.2: Know Basic Maths",
+            "topic": "GCD Or HCF",
+            "link": "https://practice.geeksforgeeks.org/problems/lcm-and-gcd4516/"
+        }
+    },
+    {
+        "model": "db.QuestionData",
+        "pk": 10,
+        "fields": {
+            "topic_id": "10",
+            "heading_id" : "1",
+            "sub_heading_id" : "2",
+            "heading" : "Step 1: Learn the basics",
+            "sub_heading" :"Step 1.2: Know Basic Maths",
+            "topic": "Armstrong Numbers",
+            "link": "https://practice.geeksforgeeks.org/problems/armstrong-numbers2727/"
+        }
+    },
+    {
+        "model": "db.QuestionData",
+        "pk": 11,
+        "fields": {
+            "topic_id": "11",
+            "heading_id" : "1",
+            "sub_heading_id" : "2",
+            "heading" : "Step 1: Learn the basics",
+            "sub_heading" :"Step 1.2: Know Basic Maths",
+            "topic": "Print all Divisors",
+            "link": "https://practice.geeksforgeeks.org/problems/sum-of-all-divisors-from-1-to-n4738/1"
+        }
+    },
+    {
+        "model": "db.QuestionData",
+        "pk": 12,
+        "fields": {
+            "topic_id": "12",
+            "heading_id" : "1",
+            "sub_heading_id" : "2",
+            "heading" : "Step 1: Learn the basics",
+            "sub_heading" :"Step 1.2: Know Basic Maths",
+            "topic": "Check for Prime",
+            "link": "https://practice.geeksforgeeks.org/problems/minimum-number-of-jumps-1587115620/1"
+        }
+    },
+    {
+        "model": "db.QuestionData",
+        "pk": 13,
+        "fields": {
+            "topic_id": "13",
+            "heading_id" : "1",
+            "sub_heading_id" : "3",
+            "heading" : "Step 1: Learn the basics",
+            "sub_heading" :"Step 1.3: Learn Basic Recursion",
+            "topic": "Understand recursion by print somet\u2026",
+            "link": "https://bit.ly/3K2epHv"
+        }
+    },
+    {
+        "model": "db.QuestionData",
+        "pk": 14,
+        "fields": {
+            "topic_id": "14",
+            "heading_id" : "2",
+            "sub_heading_id" : "1",
+            "heading" : "Step 2: Learn Important Sorting Techniques",
+            "sub_heading" :"Step 2.1: Sorting-I",
+            "topic": "Selection Sort",
+            "link": "https://bit.ly/3ppA6YJ"
+        }
+    },
+    {
+        "model": "db.QuestionData",
+        "pk": 15,
+        "fields": {
+            "topic_id": "15",
+            "heading_id" : "2",
+            "sub_heading_id" : "1",
+            "heading" : "Step 2: Learn Important Sorting Techniques",
+            "sub_heading" :"Step 2.1: Sorting-I",
+            "topic": "Bubble Sort",
+            "link": "https://bit.ly/3w6yQx8"
+        }
+    },
+    {
+        "model": "db.QuestionData",
+        "pk": 16,
+        "fields": {
+            "topic_id": "16",
+            "heading_id" : "2",
+            "sub_heading_id" : "2",
+            "heading" : "Step 2: Learn Important Sorting Techniques",
+            "sub_heading" :"Step 2.2: Sorting-II",
+            "topic": "Merge Sort",
+            "link": "https://bit.ly/3A30Anw"
+        }
+    },
+    {
+        "model": "db.QuestionData",
+        "pk": 16,
+        "fields": {
+            "topic_id": "16",
+            "heading_id" : "2",
+            "sub_heading_id" : "2",
+            "heading" : "Step 2: Learn Important Sorting Techniques",
+            "sub_heading" :"Step 2.2: Sorting-II",
+            "topic": "Recursive Bubble Sort",
+            "link": "https://bit.ly/3QV65v"
         }
     }
+    
 ]

@@ -1,5 +1,5 @@
 "use client"
-import { AccountCircleOutlined, CookieSharp, LockOutlined } from '@mui/icons-material';
+import { AccountCircleOutlined, LockOutlined } from '@mui/icons-material';
 import { useRouter } from 'next/navigation'
 import { useCookies } from 'react-cookie'
 

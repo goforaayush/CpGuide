@@ -10,7 +10,6 @@ import {
 } from "@mui/material";
 import { FiCheckCircle } from "react-icons/fi";
 import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
-import { Box } from "@mui/system";
 
 // Define the dark theme
 const theme = createTheme({

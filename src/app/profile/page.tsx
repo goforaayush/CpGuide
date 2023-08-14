@@ -12,10 +12,8 @@ import {
   Form,
   Modal,
 } from "react-bootstrap";
-import SaveIcon from "@mui/icons-material/Save";
 import { useCookies } from "react-cookie";
 import { toast } from "react-hot-toast";
-import { useRouter } from "next/navigation";
 import { createQuestions } from "@/utilities/createQuestionObject";
 import { fetchProfileData } from "@/api/fetchProfileData";
 import { saveUserVisit } from "@/api/saveUserVisit";
@@ -67,9 +65,11 @@ interface Questions {
 //better to create a css file for this
 const styles = {
   container: {
+    
     background: "#1a1a1a",
     color: "#fff",
     padding: "20px",
+    minHeight: "100vh"
   },
   card: {
     background: "#262626",
@@ -100,8 +100,8 @@ export default function ProfilePage() {
   const [userData, setUserData] = useState<UserData | null>(null);
   const [stepData, setStepData] = useState<StepData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [status, setStatus] = useState(Array(3).fill("Unvisited"));
-  const [noteBoxState, setnoteBoxState] = useState(Array(3).fill(false));
+  const [status, setStatus] = useState(Array(16).fill("Unvisited"));
+  const [noteBoxState, setnoteBoxState] = useState(Array(status.length).fill(false));
   const [note, setNote] = useState("");
 
   const isBigger = useMediaQuery({ query: "(min-width: 1401px)" });
@@ -136,6 +136,8 @@ export default function ProfilePage() {
             console.log(parseInt(visitJSON[visit].topicId));
             copyStatus[parseInt(visitJSON[visit].topicId) - 1] = "Visited";
           }
+          console.log(copyStatus);
+          
           setStatus([...copyStatus]);
         } catch (error) {
           console.log(error);
@@ -231,7 +233,8 @@ export default function ProfilePage() {
     }
   };
   return (
-    <Card style={styles.container}>
+    
+    <div style={styles.container}>
       <center>
         <Card.Title className="mb-4 fw-bold display-4">User Profile</Card.Title>
       </center>
@@ -670,6 +673,6 @@ export default function ProfilePage() {
           </Container>
         </Card.Body>
       )}
-    </Card>
+    </div>
   );
 }

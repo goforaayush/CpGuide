@@ -5,7 +5,6 @@ import { Navbar, Container, Nav, Button } from "react-bootstrap";
 import { useCookies } from "react-cookie";
 
 export default function NavBar() {
-  const pathName = usePathname();
   const [cookies, setCookie, removeCookie] = useCookies(["token"]);
 
   

@@ -9,7 +9,6 @@ import {
   LockOutlined,
   PersonOutline,
 } from "@mui/icons-material";
-import { SIGNUP_URL } from "@/utilities/url-builder";
 import { postSignup } from "@/api/postSignup";
 
 // import register_usr from './register_usr';?
