@@ -20,9 +20,12 @@ Setup virtual environment in this directory and activate it
 ```bash
 python -m venv myvenv
 
+#for windows
 cd myvenv/Scripts
-./Activate.ps1
+./Activate.ps1    
 
+#for Mac/Linux
+source myvenv/bin/activate
 ```
 After virtual env activated
 ```bash
@@ -35,15 +38,33 @@ python manage.py runserver
 
 ```
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
 1.
-![image](https://github.com/Pratham1812/CpGuide/assets/32198580/d55556f5-64d4-49ef-bcd2-9603bd164f17)
+<img width="1709" alt="image" src="https://github.com/goforaayush/CpGuide/assets/103204377/cad82ca2-0c40-45b6-a2c1-8b1ffc30b16c">
+
+
+To know more about what the Website is all about, click on  ```About``` in the NavBar.
 
 2.
-![image](https://github.com/Pratham1812/CpGuide/assets/32198580/c3d4eca6-dc64-4722-a673-b1b1701ae0f0)
+<img width="1710" alt="image" src="https://github.com/goforaayush/CpGuide/assets/103204377/90a9e115-6ab1-46d4-91bd-25f89865ad25">
 
 
-3.
-![image](https://github.com/Pratham1812/CpGuide/assets/32198580/e13a505e-0333-4223-bdd1-c16200c6c38d)
+To SignUp, click on the ```SignUp``` button in NavBar.
+
+
+3a.
+
+<img width="1710" alt="image" src="https://github.com/goforaayush/CpGuide/assets/103204377/91a3dca5-41d2-4498-a7f8-55a0631345f3">
+
+
+To Login, click on the ```Login``` button in NavBar.
+
+3b.
+
+<img width="1710" alt="image" src="https://github.com/goforaayush/CpGuide/assets/103204377/7c17fd41-ca49-4a96-b74d-85fd7efecbdd">
+
+To view your Profile, click on the ```Profile``` button in NavBar.
+
 
 4.
 ![image](https://github.com/Pratham1812/CpGuide/assets/32198580/860fa8b2-c250-4911-819a-017d75052018)
