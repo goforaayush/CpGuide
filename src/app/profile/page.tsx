@@ -343,6 +343,16 @@ export default function ProfilePage() {
                                                           </center>
                                                         )}
                                                         {isTabletMin && (
+                                                           <a
+                                                           href={
+                                                             question.link
+                                                           }
+                                                           target="_blank"
+                                                           style={{
+                                                             color:
+                                                               "#61dafb",
+                                                           }}
+                                                         >
                                                           <Button
                                                             style={{
                                                               position:
@@ -358,19 +368,11 @@ export default function ProfilePage() {
                                                               );
                                                             }}
                                                           >
-                                                            <a
-                                                              href={
-                                                                question.link
-                                                              }
-                                                              target="_blank"
-                                                              style={{
-                                                                color:
-                                                                  "#61dafb",
-                                                              }}
-                                                            >
+                                                           
                                                               Solve
-                                                            </a>
                                                           </Button>
+                                                          </a>
+
                                                         )}
                                                       </>
                                                       <br />
