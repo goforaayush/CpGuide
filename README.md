@@ -66,18 +66,18 @@ To Login, click on the ```Login``` button in NavBar.
 To view your Profile, click on the ```Profile``` button in NavBar.
 
 
+
+
 4.
-![image](https://github.com/Pratham1812/CpGuide/assets/32198580/860fa8b2-c250-4911-819a-017d75052018)
+<img width="1710" alt="image" src="https://github.com/goforaayush/CpGuide/assets/103204377/cafd9400-c5bf-4ab4-8717-95bab43ee5c8">
+
+Click on ```Solve``` button to get redirected to the question. This will also mark the question to Visited. However, if you still want to mark a question as Unvisited, you can change it to Unvisited by selecting from the Dropdown.
+If you wish to make a Note on the question or write any remarks, you can easily do so by clicking on the ```Make a Note``` button. Make sure to click on the ```Save Changes``` button before leaving, to save your note.
 
 5.
-![image](https://github.com/Pratham1812/CpGuide/assets/32198580/8d1ed246-3e50-4454-b530-45d3f6e5d7cb)
+<img width="1710" alt="image" src="https://github.com/goforaayush/CpGuide/assets/103204377/2ed69525-da70-4058-97a7-232b27a81ba6">
 
-6.
-![image](https://github.com/Pratham1812/CpGuide/assets/32198580/9966ff98-1744-4dc5-bbaf-b21990d7588b)
-
-
-
-
+We have made the App completely responsive to different widths of the screen. This means, it will run flawlessly even on Mobile Phones. So, no worries if you have any OCD issues. We have got you covered.
 
 ## For commit messages
 
