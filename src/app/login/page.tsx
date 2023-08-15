@@ -6,7 +6,7 @@ import { useCookies } from 'react-cookie'
 import { toast } from 'react-hot-toast'
 import React, { useEffect } from 'react';
 import { Button, TextField, FormControl, Typography, Box } from '@mui/material';
-import { postLogin } from '@/api/postLogin';
+import { postLogin } from '@/api/userAdmission';
 
 export default async function Login() {
   const router = useRouter()

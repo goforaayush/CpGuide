@@ -16,12 +16,8 @@ import { useCookies } from "react-cookie";
 import { toast } from "react-hot-toast";
 import { createQuestions } from "@/utilities/createQuestionObject";
 import { fetchProfileData } from "@/api/fetchProfileData";
-import { saveUserVisit } from "@/api/saveUserVisit";
-import { deleteUserVisit } from "@/api/deleteUserVisit";
-import { getUserVisit } from "@/api/getUserVisit";
-import { getUserNote } from "@/api/getUserNote";
-import { updateUserNote } from "@/api/updateUserNote";
-import { deleteUserNote } from "@/api/deleteUserNote";
+import { saveUserVisit , deleteUserVisit , getUserVisit } from "@/api/userVisit";
+import { getUserNote , updateUserNote , deleteUserNote} from "@/api/userNote";
 import { useMediaQuery } from "react-responsive";
 
 interface UserData {

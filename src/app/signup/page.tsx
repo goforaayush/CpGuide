@@ -9,7 +9,7 @@ import {
   LockOutlined,
   PersonOutline,
 } from "@mui/icons-material";
-import { postSignup } from "@/api/postSignup";
+import { postSignup } from "@/api/userAdmission";
 
 // import register_usr from './register_usr';?
 export default async function SignUp() {
