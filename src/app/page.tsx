@@ -91,6 +91,7 @@ const BottomBar = styled(motion.div)`
     #2d3748
   ); /* Gradient Background */
   box-shadow: -4px 0px 10px rgba(0, 0, 0, 0.2);
+  z-index: 2
 `;
 
 const IconWrapper = styled(motion.div)`
@@ -119,7 +120,7 @@ const InspiredFrom = styled(motion.p)`
 const HomePage: React.FC = () => {
   const controls = useAnimation();
   const { ref, inView } = useInView({ threshold: 0.3 });
-  const isBigger = useMediaQuery({ query: "(min-width: 670px)" });
+  const isBigger = useMediaQuery({ query: "(min-width: 870px)" });
 
   useEffect(() => {
     if (inView) {
@@ -167,6 +168,7 @@ const HomePage: React.FC = () => {
           Join us to learn Competitive Programming.
         </motion.p>
       </center>
+      <GlobeIcon />
       {!isBigger && (
         <BottomBar
           initial={{ y: "100%" }}
@@ -203,7 +205,6 @@ const HomePage: React.FC = () => {
           {/* Add more 3D icons here */}
         </SideBar>
       )}
-      <GlobeIcon />
     </HomeContainer>
   );
 };
