@@ -404,7 +404,7 @@ export default function ProfilePage() {
                                                               style={{
                                                                 position:
                                                                   "absolute",
-                                                                right: "27%",
+                                                                right: "30%",
                                                                 bottom: "-5px",
                                                               }}
                                                               variant="outline-light"
