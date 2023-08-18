@@ -345,22 +345,15 @@ export default function ProfilePage() {
                                                           </center>
                                                         )}
                                                         {isTabletMin && (
-                                                           <a
-                                                           href={
-                                                             question.link
-                                                           }
-                                                           target="_blank"
-                                                           style={{
-                                                             color:
-                                                               "#61dafb",
-                                                           }}
-                                                         >
+                                                           
+                                                         
                                                           <Button
                                                             style={{
                                                               position:
                                                                 "absolute",
                                                               left: "1%",
-                                                              bottom: "10px",
+                                                              bottom:"10px",
+                                                              zIndex:2
                                                             }}
                                                             variant="outline-light"
                                                             onClick={() => {
@@ -369,11 +362,16 @@ export default function ProfilePage() {
                                                                 question.topic_id
                                                               );
                                                             }}
-                                                          >
+                                                          ><a
+                                                           href={
+                                                             question.link
+                                                           }
+                                                           target="_blank"
+                                                           >
                                                            
-                                                              Solve
+                                                              Solve</a>
                                                           </Button>
-                                                          </a>
+                                                          
 
                                                         )}
                                                       </>
