@@ -70,10 +70,14 @@ To view your Profile, click on the ```Profile``` button in NavBar.
 
 
 4.
-<img width="1710" alt="image" src="https://github.com/goforaayush/CpGuide/assets/103204377/cafd9400-c5bf-4ab4-8717-95bab43ee5c8">
+<img width="1710" alt="image" src="https://github.com/goforaayush/CpGuide/assets/103204377/b42443a5-5c1f-49e2-a9e0-bd2b431d0c52">
+
 
 Click on ```Solve``` button to get redirected to the question. This will also mark the question to Visited. However, if you still want to mark a question as Unvisited, you can change it to Unvisited by selecting from the Dropdown.
+
 If you wish to make a Note on the question or write any remarks, you can easily do so by clicking on the ```Make a Note``` button. Make sure to click on the ```Save Changes``` button before leaving, to save your note.
+
+If you wish to strengthen your concept on which the question is based, click on the ```Clear your Concept``` button to get redirected to a youtube video which explains the concept in detail.
 
 5.
 <img width="1710" alt="image" src="https://github.com/goforaayush/CpGuide/assets/103204377/2ed69525-da70-4058-97a7-232b27a81ba6">
