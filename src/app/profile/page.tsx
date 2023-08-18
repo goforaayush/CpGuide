@@ -19,6 +19,7 @@ import { fetchProfileData } from "@/api/fetchProfileData";
 import { saveUserVisit , deleteUserVisit , getUserVisit } from "@/api/userVisit";
 import { getUserNote , updateUserNote , deleteUserNote} from "@/api/userNote";
 import { useMediaQuery } from "react-responsive";
+import { useRouter } from "next/navigation";
 
 interface UserData {
   username: string;
@@ -56,6 +57,7 @@ interface Questions {
   ): import("react").ReactNode;
   topic_id: number;
   link: string;
+  yt: string;
 }
 
 //better to create a css file for this
@@ -96,9 +98,11 @@ export default function ProfilePage() {
   const [userData, setUserData] = useState<UserData | null>(null);
   const [stepData, setStepData] = useState<StepData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [status, setStatus] = useState(Array(16).fill("Unvisited"));
+  const [status, setStatus] = useState(Array(18).fill("Unvisited"));
   const [noteBoxState, setnoteBoxState] = useState(Array(status.length).fill(false));
   const [note, setNote] = useState("");
+
+  const router = useRouter()
 
   const isBigger = useMediaQuery({ query: "(min-width: 1401px)" });
   const isMediumMax = useMediaQuery({ query: "(max-width: 1400px)" });
@@ -155,6 +159,8 @@ export default function ProfilePage() {
     const fetchQuestions = async () => {
       const questions = await createQuestions(cookies["token"]);
       setStepData(questions);
+      console.log(questions);
+      
     };
     fetchQuestions();
     setLoading(false);
@@ -398,7 +404,7 @@ export default function ProfilePage() {
                                                               style={{
                                                                 position:
                                                                   "absolute",
-                                                                right: "12.5%",
+                                                                right: "27%",
                                                                 bottom: "-5px",
                                                               }}
                                                               variant="outline-light"
@@ -418,7 +424,7 @@ export default function ProfilePage() {
                                                               style={{
                                                                 position:
                                                                   "absolute",
-                                                                right: "15%",
+                                                                right: "37%",
                                                                 bottom: "-5px",
                                                               }}
                                                               variant="outline-light"
@@ -437,7 +443,7 @@ export default function ProfilePage() {
                                                             style={{
                                                               position:
                                                                 "absolute",
-                                                              right: "10.5%",
+                                                              right: "26%",
                                                               bottom: "-5px",
                                                             }}
                                                             variant="outline-light"
@@ -457,7 +463,7 @@ export default function ProfilePage() {
                                                               style={{
                                                                 position:
                                                                   "absolute",
-                                                                right: "20%",
+                                                                right: "50%",
                                                                 bottom: "-5px",
                                                               }}
                                                               variant="outline-light"
@@ -471,6 +477,76 @@ export default function ProfilePage() {
                                                               Make a Note
                                                             </Button>
                                                           )}
+                                                          <br />
+                                                          {isMobile && (
+                                                          <center>
+                                                            <a href={question.yt} target="_blank" rel="noopener noreferrer">
+                                                            <Button
+                                                              variant="outline-light"
+                                                            >
+                                                              Clear your Concept
+                                                            </Button></a>
+                                                          </center>
+                                                        )}
+                                                        {isTabletMax &&
+                                                          isTabletMin && (
+                                                            <a href={question.yt} target="_blank" rel="noopener noreferrer">
+                                                            <Button
+                                                              style={{
+                                                                position:
+                                                                  "absolute",
+                                                                right: "20%",
+                                                                bottom: "-5px",
+                                                              }}
+                                                              variant="outline-light"
+                                                            >
+                                                              Clear your Concept
+                                                            </Button></a>
+                                                          )}
+                                                          {isDesktopOrLaptopMax &&
+                                                          isDesktopOrLaptopMin && (
+                                                            <a href={question.yt} target="_blank" rel="noopener noreferrer">
+                                                            <Button
+                                                              style={{
+                                                                position:
+                                                                  "absolute",
+                                                                right: "15%",
+                                                                bottom: "-5px",
+                                                              }}
+                                                              variant="outline-light"
+                                                            >
+                                                              Clear your Concept
+                                                            </Button></a>
+                                                          )}
+                                                          {isMediumMax &&
+                                                          isMediumMin && (
+                                                            <a href={question.yt} target="_blank" rel="noopener noreferrer">
+                                                            <Button
+                                                              style={{
+                                                                position:
+                                                                  "absolute",
+                                                                right: "12.5%",
+                                                                bottom: "-5px",
+                                                              }}
+                                                              variant="outline-light"
+                                                            >
+                                                              Clear your Concept
+                                                            </Button></a>
+                                                          )}
+                                                          {isBigger && (
+                                                            <a href={question.yt} target="_blank" rel="noopener noreferrer">
+                                                          <Button
+                                                            style={{
+                                                              position:
+                                                                "absolute",
+                                                              right: "10.5%",
+                                                              bottom: "-5px",
+                                                            }}
+                                                            variant="outline-light"
+                                                          >
+                                                            Clear your Concept
+                                                          </Button></a>
+                                                        )}
                                                         <Modal
                                                           centered
                                                           show={

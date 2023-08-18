@@ -12,6 +12,7 @@ export const createQuestions = async (token:string) => {
       link,
       topic_id,
       topic,
+      yt
     } = question;
     let headingObj = acc.find((item: { heading_id: string; }) => item.heading_id === heading_id);
     if (!headingObj) {
@@ -25,7 +26,7 @@ export const createQuestions = async (token:string) => {
       subheadingObj = { sub_heading_id, sub_heading, questions: [] };
       headingObj.subheadings.push(subheadingObj);
     }
-    subheadingObj.questions.push({ topic_id, link, topic });
+    subheadingObj.questions.push({ topic_id, link, topic , yt});
     return acc;
   }, []);
 

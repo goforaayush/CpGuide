@@ -3,7 +3,7 @@ from .models import QuestionData, UserVisits, UserNotes
 class QuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model=QuestionData
-        fields=['topic_id' , 'heading' , 'sub_heading' , 'heading_id' , 'sub_heading_id' , 'topic' , 'link'] 
+        fields=['topic_id' , 'heading' , 'sub_heading' , 'heading_id' , 'sub_heading_id' , 'topic' , 'link', 'yt'] 
 
 class UserVisitsSerializer(serializers.ModelSerializer):
     class Meta:

@@ -9,6 +9,7 @@ class QuestionData(models.Model):
     sub_heading_id = models.CharField(max_length=3)
     topic = models.CharField(max_length=255)
     link = models.TextField()
+    yt = models.TextField()
    
 class UserVisits(models.Model):
     user = models.CharField(max_length=255)
