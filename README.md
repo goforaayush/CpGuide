@@ -34,6 +34,7 @@ pip install -r requirements.txt
 ```
 Go to directory containing manage.py file
 ```bash
+python manage.py loaddata db/questionData.json
 python manage.py runserver
 
 ```
